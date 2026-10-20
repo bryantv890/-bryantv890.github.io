@@ -4,59 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#05070d">
+<meta name="description" content="B_STREAMTV football match centre with live scores, fixtures and official broadcaster information.">
+
 <title>B_STREAMTV | Football Lives Here</title>
 
 <style>
 :root {
-  --red: #2563eb;
+  --blue: #3b82f6;
   --dark: #05070d;
+  --navy: #0b1f3a;
+  --card: #0b1220;
   --white: #ffffff;
-  --light: #0b1f3a;
+  --muted: #a9b7ca;
+  --border: #243b5a;
 }
- 
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #05070d;
-  color: #ffffff;
+  background: var(--dark);
+  color: var(--white);
 }
 
 header {
- background: #0b1f3a;
-  padding: 18px 6%;
+  background: var(--navy);
+  padding: 17px 6%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 3px solid var(--red);
+  gap: 10px;
+  border-bottom: 3px solid var(--blue);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
 .logo {
-  font-size: 27px;
+  font-size: 25px;
   font-weight: 900;
   letter-spacing: -1px;
 }
 
 .logo span {
-  color: var(--red);
+  color: var(--blue);
 }
 
-.live {
-  color: var(--red);
-  font-size: 12px;
+.live-label {
+  color: #93c5fd;
+  font-size: 11px;
   font-weight: bold;
 }
 
 .hero {
   padding: 45px 6%;
-  color: white;
   background: linear-gradient(120deg, #05070d, #0b1f3a, #163a63);
 }
 
@@ -66,15 +74,16 @@ header {
 }
 
 .hero p {
-  line-height: 1.6;
-  max-width: 520px;
+  line-height: 1.7;
+  max-width: 550px;
+  color: #d4deed;
 }
 
 .button {
   display: inline-block;
   padding: 13px 20px;
-  background: white;
-  color: var(--red);
+  background: var(--blue);
+  color: white;
   text-decoration: none;
   border-radius: 7px;
   font-weight: bold;
@@ -82,26 +91,29 @@ header {
 }
 
 main {
-  padding: 25px 6%;
+  padding: 20px 6%;
 }
 
 .section-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0 12px;
 }
 
 .section-title h2 {
-  font-size: 23px;
+  font-size: 21px;
+  margin: 0;
 }
 
 .badge {
-  background: var(--red);
-  color: white;
+  background: #163a63;
+  color: #bfdbfe;
   padding: 6px 10px;
   border-radius: 5px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -109,13 +121,13 @@ main {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding: 5px 0 15px;
+  padding: 8px 0 15px;
 }
 
 .league {
-  border: 1px solid #243b5a;
+  border: 1px solid var(--border);
   border-radius: 25px;
-  background: #0b1f3a;
+  background: var(--navy);
   color: white;
   padding: 11px 16px;
   white-space: nowrap;
@@ -125,31 +137,32 @@ main {
 
 .league.active {
   background: #163a63;
-  color: white;
-  border-color: #3b82f6;
+  border-color: var(--blue);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
 }
 
 .card {
-  background: #0b1220;
+  background: var(--card);
   color: white;
-  border: 1px solid #243b5a;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 20px;
+  padding: 18px;
   box-shadow: 0 4px 14px #00000030;
+  min-width: 0;
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
   font-size: 12px;
-  color: #666;
+  color: var(--muted);
 }
 
 .teams {
@@ -158,65 +171,161 @@ main {
   align-items: center;
   text-align: center;
   gap: 10px;
-  margin: 25px 0;
+  margin: 22px 0;
   font-weight: bold;
 }
 
 .team {
   flex: 1;
+  overflow-wrap: anywhere;
 }
 
 .crest {
-  font-size: 32px;
+  font-size: 28px;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
 }
 
 .vs {
-  color: #888;
+  color: #93a4bb;
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .watch {
   display: block;
   width: 100%;
-  padding: 13px;
-  background: var(--red);
+  padding: 12px;
+  background: #163a63;
   color: white;
   text-align: center;
   text-decoration: none;
-  border: none;
+  border: 1px solid var(--blue);
   border-radius: 7px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
 }
 
+.status-text {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.live-match {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.match-heading {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #93c5fd;
+  font-size: 12px;
+}
+
+.scoreline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.home {
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.away {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.score {
+  color: #93c5fd;
+  font-size: 23px;
+  white-space: nowrap;
+}
+
+.match-meta {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
 .notice {
-  background: #fff1f1;
-  border-left: 4px solid var(--red);
+  background: #101d30;
+  border-left: 4px solid var(--blue);
   padding: 15px;
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 14px;
   border-radius: 5px;
+  color: #d4deed;
+}
+
+.stream-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stream-frame video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #000;
+}
+
+.stream-message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 15px;
+  color: #d4deed;
+  background: #080d16;
+  pointer-events: none;
 }
 
 footer {
   text-align: center;
-  background: #181818;
-  color: white;
+  background: #080d16;
+  color: var(--muted);
   padding: 25px 6%;
   line-height: 1.8;
   margin-top: 30px;
+  border-top: 1px solid var(--border);
 }
 
-footer span {
-  color: #ff424b;
+footer .logo {
+  color: white;
 }
 
 @media (max-width: 420px) {
+  header {
+    padding: 15px 4%;
+  }
+
   .logo {
-    font-size: 23px;
+    font-size: 21px;
+  }
+
+  .live-label {
+    font-size: 9px;
   }
 
   .hero {
@@ -231,242 +340,396 @@ footer span {
 
 <header>
   <div class="logo">B_STREAM<span>TV</span> 📺</div>
-  <div class="live">● FOOTBALL HUB</div>
+  <div class="live-label">● FOOTBALL HUB</div>
 </header>
 
 <section class="hero">
   <div>WELCOME TO B_STREAMTV</div>
   <h1>Football Lives Here.</h1>
-  <p>Your destination for football fixtures, match updates,
-  live scores and authorized football streams.</p>
-  <a class="button" href="#matches">Explore Matches ↓</a>
+  <p>
+    Your destination for football fixtures, live scores,
+    match updates and official broadcaster information.
+  </p>
+  <a class="button" href="#live-scores">Explore Live Scores ↓</a>
 </section>
 
 <main>
 
-  <div class="section-title">
-    <h2>🏆 Explore Leagues</h2>
-  </div>
-
-  <div class="leagues">
-    <button class="league active" data-league="All">All Matches</button>
-    <button class="league" data-league="Premier League">Premier League</button>
-    <button class="league" data-league="La Liga">La Liga</button>
-    <button class="league" data-league="Champions League">Champions League</button>
-  </div>
-
-  <div class="section-title" id="matches">
-    <h2>⚽ Featured Matches</h2>
-    <span class="badge">MATCH CENTRE</span>
-  </div>
-
-  <div class="grid" id="matchGrid"></div>
-
-  <br>
-
-  <div class="section-title">
-    <h2>📺 Watch Football</h2>
-  </div>
-
-  <div class="card">
-    <h3>Watch on BRYANTV</h3>
-    <p>Choose a match to watch through an authorized broadcaster.</p>
-    <div class="notice">
-      🔴 Live match videos will appear here when we connect an
-      authorized streaming source. No match is being broadcast
-      by this demo page yet.
+  <section id="featured">
+    <div class="section-title">
+      <h2>🏆 Explore Leagues</h2>
     </div>
-    <br>
-    <a class="watch"
-       href="https://www.livesoccertv.com/"
-       target="_blank"
-       rel="noopener noreferrer">
-       Find Official Broadcasters ↗
-    </a>
-  </div>
 
-  <br>
+    <div class="leagues">
+      <button class="league active" data-league="All">All Matches</button>
+      <button class="league" data-league="Premier League">Premier League</button>
+      <button class="league" data-league="La Liga">La Liga</button>
+      <button class="league" data-league="Champions League">Champions League</button>
+    </div>
 
-  <div class="section-title">
-    <h2>📅 Match Information</h2>
-  </div>
+    <div class="section-title">
+      <h2>⚽ Featured Matches</h2>
+      <span class="badge">MATCH CENTRE</span>
+    </div>
 
-  <div class="card">
-    <p>We're building your football match centre!</p>
-    <p>Live scores, kickoff times and league tables can be
-    connected in our next development stage.</p>
-  </div>
+    <p id="featured-status" class="status-text">
+      Loading fixtures...
+    </p>
+
+    <div class="grid" id="matchGrid"></div>
+  </section>
+
+  <section id="live-scores">
+    <div class="section-title">
+      <h2>🔴 B_STREAMTV LIVE SCORES</h2>
+      <span class="badge">LIVE UPDATES</span>
+    </div>
+
+    <p id="live-status" class="status-text" aria-live="polite">
+      Loading live matches...
+    </p>
+
+    <div id="live-match-list"></div>
+  </section>
+
+  <section id="watch-football">
+    <div class="section-title">
+      <h2>📺 Watch Football</h2>
+    </div>
+
+    <div class="card">
+      <h3>B_STREAMTV LIVE</h3>
+
+      <p>
+        Watch through an authorized broadcaster when a stream is available.
+      </p>
+
+      <div class="stream-frame">
+        <video id="liveVideo" controls playsinline preload="none">
+          Your browser does not support HTML video.
+        </video>
+
+        <div id="streamMessage" class="stream-message">
+          ⚽ Live stream coming soon
+        </div>
+      </div>
+
+      <p class="match-meta">
+        A compatible, authorized stream source must be connected
+        before video can play here.
+      </p>
+
+      <a class="watch"
+         href="https://www.livesoccertv.com/"
+         target="_blank"
+         rel="noopener noreferrer">
+        Find Official Broadcasters ↗
+      </a>
+    </div>
+  </section>
+
+  <section id="match-information">
+    <div class="section-title">
+      <h2>📅 Match Information</h2>
+    </div>
+
+    <div class="card">
+      <p>Welcome to B_STREAMTV, your football match centre!</p>
+      <p class="match-meta">
+        Kickoff times are shown in Nigeria time. Scores and match
+        status depend on the connected football data provider.
+      </p>
+    </div>
+  </section>
 
 </main>
 
 <footer>
- <div class="logo">B_STREAM<span>TV</span> 📺</div>
+  <div class="logo">B_STREAM<span>TV</span> 📺</div>
   Football lives here.
   <br>
   <small>Match information and authorized streams only.</small>
   <br>
   <small>© 2026 B_STREAMTV</small>
 </footer>
-<script>
-const matches = [];
 
-const grid = document.getElementById("matchGrid"); 
+<script>
+const API_URL = "/.netlify/functions/fixtures";
 
 const grid = document.getElementById("matchGrid");
+const featuredStatus = document.getElementById("featured-status");
+const liveStatus = document.getElementById("live-status");
+const liveList = document.getElementById("live-match-list");
 
-function renderMatches(league = "All") {
-  const filtered = league === "All"
-    ? matches
-    : matches.filter(match => match.league === league);
+let allFixtures = [];
 
-  grid.innerHTML = filtered.map(match => `
-    <article class="card">
-      <div class="card-top">
-        <span>${match.league}</span>
-        <span>FIXTURE EXAMPLE</span>
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+function leagueName(match) {
+  return match.league?.name ?? "Football";
+}
+
+function matchState(match) {
+  return match.fixture?.status?.short ?? "";
+}
+
+function matchDescription(match) {
+  return match.fixture?.status?.long ?? "Status unavailable";
+}
+
+function isLive(match) {
+  return [
+    "1H", "HT", "2H", "ET", "BT", "P", "LIVE", "INT"
+  ].includes(matchState(match));
+}
+
+function nigeriaKickoff(dateValue) {
+  if (!dateValue) return "Kickoff time unavailable";
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Kickoff time unavailable";
+  }
+
+  return date.toLocaleString("en-NG", {
+    timeZone: "Africa/Lagos",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+  });
+}
+
+function matchClock(match) {
+  const elapsed = match.fixture?.status?.elapsed;
+
+  if (isLive(match) && elapsed !== null && elapsed !== undefined) {
+    return `${elapsed}'`;
+  }
+
+  return matchDescription(match);
+}
+
+function broadcasterLink() {
+  return `
+    <a class="watch"
+       href="https://www.livesoccertv.com/"
+       target="_blank"
+       rel="noopener noreferrer">
+      Find Official Broadcasters ↗
+    </a>
+  `;
+}
+
+function renderLiveScores(fixtures) {
+  const liveMatches = fixtures.filter(isLive);
+
+  if (liveMatches.length === 0) {
+    liveStatus.textContent =
+      "No live matches right now. Check back when games are in progress.";
+
+    liveList.innerHTML = "";
+    return;
+  }
+
+  liveStatus.textContent =
+    `${liveMatches.length} live match${liveMatches.length === 1 ? "" : "es"} found.`;
+
+  liveList.innerHTML = liveMatches.map(match => `
+    <article class="live-match">
+      <div class="match-heading">
+        <span>${escapeHTML(leagueName(match))}</span>
+        <span>🔴 ${escapeHTML(matchClock(match))}</span>
       </div>
-      <div class="teams">
-        <div class="team">
-          <span class="crest">${match.homeIcon}</span>
-          ${match.home}
-        </div>
-        <span class="vs">VS</span>
-        <div class="team">
-          <span class="crest">${match.awayIcon}</span>
-          ${match.away}
-        </div>
+
+      <div class="scoreline">
+        <span class="home">
+          ${escapeHTML(match.teams?.home?.name ?? "Home")}
+        </span>
+
+        <strong class="score">
+          ${escapeHTML(match.goals?.home ?? 0)}
+          -
+          ${escapeHTML(match.goals?.away ?? 0)}
+        </strong>
+
+        <span class="away">
+          ${escapeHTML(match.teams?.away?.name ?? "Away")}
+        </span>
       </div>
-      <button class="watch" onclick="showNotice()">
-        Match Details
-      </button>
+
+      <div class="match-meta">
+        Kickoff: ${escapeHTML(nigeriaKickoff(match.fixture?.date))} WAT<br>
+        Status: ${escapeHTML(matchDescription(match))}
+      </div>
+
+      <br>
+      ${broadcasterLink()}
     </article>
   `).join("");
 }
 
-function showNotice() {
-  alert("These are sample fixtures. Live match data and authorized streams will be connected in a later step.");
+function renderFeaturedMatches(selectedLeague = "All") {
+  let fixtures = allFixtures;
+
+  if (selectedLeague !== "All") {
+    fixtures = allFixtures.filter(match => {
+      const name = leagueName(match).toLowerCase();
+
+      if (selectedLeague === "Premier League") {
+        return name.includes("premier league");
+      }
+
+      if (selectedLeague === "La Liga") {
+        return name.includes("laliga") ||
+               name.includes("la liga") ||
+               name.includes("primera division");
+      }
+
+      if (selectedLeague === "Champions League") {
+        return name.includes("champions league");
+      }
+
+      return false;
+    });
+  }
+
+  if (fixtures.length === 0) {
+    grid.innerHTML = `
+      <article class="card">
+        No fixtures available for this selection right now.
+      </article>
+    `;
+    return;
+  }
+
+  grid.innerHTML = fixtures.slice(0, 30).map(match => {
+    const home = match.teams?.home?.name ?? "Home";
+    const away = match.teams?.away?.name ?? "Away";
+    const goalsHome = match.goals?.home;
+    const goalsAway = match.goals?.away;
+
+    const hasScore =
+      goalsHome !== null && goalsHome !== undefined &&
+      goalsAway !== null && goalsAway !== undefined;
+
+    return `
+      <article class="card">
+        <div class="card-top">
+          <span>${escapeHTML(leagueName(match))}</span>
+          <span>${escapeHTML(matchDescription(match))}</span>
+        </div>
+
+        <div class="teams">
+          <div class="team">
+            <span class="crest">⚽</span>
+            ${escapeHTML(home)}
+          </div>
+
+          <span class="vs">
+            ${hasScore
+              ? `${escapeHTML(goalsHome)} - ${escapeHTML(goalsAway)}`
+              : "VS"}
+          </span>
+
+          <div class="team">
+            <span class="crest">⚽</span>
+            ${escapeHTML(away)}
+          </div>
+        </div>
+
+        <p class="match-meta">
+          Kickoff: ${escapeHTML(nigeriaKickoff(match.fixture?.date))} WAT
+        </p>
+
+        ${broadcasterLink()}
+      </article>
+    `;
+  }).join("");
+}
+
+async function loadFixtures() {
+  try {
+    const response = await fetch(API_URL, {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("Football API request failed: " + response.status);
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data.response)) {
+      throw new Error("Unexpected football API response.");
+    }
+
+    allFixtures = data.response;
+
+    renderLiveScores(allFixtures);
+
+    const selectedLeague =
+      document.querySelector(".league.active")?.dataset.league ?? "All";
+
+    renderFeaturedMatches(selectedLeague);
+
+    featuredStatus.textContent =
+      `${allFixtures.length} fixture${allFixtures.length === 1 ? "" : "s"} received from the football data service.`;
+
+  } catch (error) {
+    console.error("B_STREAMTV error:", error);
+
+    liveStatus.textContent =
+      "Live scores are temporarily unavailable. Please try again later.";
+
+    featuredStatus.textContent =
+      "Fixtures could not be loaded. Please refresh and try again.";
+  }
 }
 
 document.querySelectorAll(".league").forEach(button => {
   button.addEventListener("click", () => {
-    document.querySelectorAll(".league").forEach(item =>
-      item.classList.remove("active")
-    );
+    document.querySelectorAll(".league").forEach(item => {
+      item.classList.remove("active");
+    });
 
     button.classList.add("active");
-    renderMatches(button.dataset.league);
+    renderFeaturedMatches(button.dataset.league);
   });
 });
 
-renderMatches();
-</script>
-<script>
-async function loadBryanTVLiveScores() {
-  try {
-    const response = await fetch('/.netlify/functions/fixtures');
-    if (!response.ok) throw new Error('Scores unavailable');
-
-    const data = await response.json();
-
-    console.log('BRYANTV football data:', data);
-
-    const fixtures = data.response || [];
-
-    if (fixtures.length === 0) {
-      console.log('No matches are live right now.');
-      return;
-    }
-
-    console.log('Live matches:', fixtures.map(match => ({
-      home: match.teams.home.name,
-      away: match.teams.away.name,
-      homeScore: match.goals.home,
-      awayScore: match.goals.away,
-      status: match.fixture.status.long
-    })));
-  } catch (error) {
-    console.error('BRYANTV scores error:', error);
-  }
-}
-
-loadBryanTVLiveScores();
-</script>
- <section id="bryantv-live" style="background:#fff;color:#222;padding:20px;border-radius:12px;margin:20px 0;">
-  <h2 style="color:#e50914;">🔴 BRYANTV LIVE SCORES</h2>
-  <p id="bryantv-status">Loading live matches...</p>
-  <div id="bryantv-live-list"></div>
-</section>
-
-<script>
-async function loadBryantTVScores() {
-  const status = document.getElementById('bryantv-status');
-  const list = document.getElementById('bryantv-live-list');
-
-  try {
-    const response = await fetch('/.netlify/functions/fixtures');
-    const data = await response.json();
-
-    if (!response.ok || !Array.isArray(data.response)) {
-      throw new Error('Scores unavailable');
-    }
-
-    const matches = data.response;
-
-    if (matches.length === 0) {
-      status.textContent = 'No live matches right now. Check back later!';
-      return;
-    }
-
-    status.textContent = matches.length + ' live matches';
-
-    const escapeHTML = value =>
-      String(value ?? '').replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[char]));
-
-    list.innerHTML = matches.map(match => `
-      <article style="border:1px solid #ddd;border-radius:10px;padding:14px;margin:12px 0;">
-        <strong>${escapeHTML(match.league?.name)}</strong>
-        <div style="display:flex;justify-content:space-between;gap:10px;margin:12px 0;">
-          <span>${escapeHTML(match.teams?.home?.name)}</span>
-          <strong>${escapeHTML(match.goals?.home ?? 0)} - ${escapeHTML(match.goals?.away ?? 0)}</strong>
-          <span>${escapeHTML(match.teams?.away?.name)}</span>
-        </div>
-        <small>${escapeHTML(match.fixture?.status?.elapsed ?? '')}' · ${escapeHTML(match.fixture?.status?.long)}</small>
-        <p><a href="https://www.livesoccertv.com/" target="_blank" rel="noopener noreferrer">Find an official broadcaster</a></p>
-      </article>
-    `).join('');
-  } catch (error) {
-    status.textContent = 'Live scores are temporarily unavailable. Please try again later.';
-  }
-}
-
-loadBryantTVScores();
-<div id="stream-player" style="background:#05070d;color:white;padding:16px;border-radius:12px;margin:20px 0;font-family:Arial,sans-serif;">
-  <h2 style="margin-top:0;color:#ff3030;">🔴 B_STREAMTV LIVE</h2>
-  <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;border-radius:8px;overflow:hidden;">
-    <video id="liveVideo" controls playsinline preload="none"
-      style="width:100%;height:100%;display:block;background:#111;">
-      Your browser does not support HTML video.
-    </video>
-    <div id="streamMessage" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;color:#ddd;background:#111;">
-      ⚽ Live stream coming soon
-    </div>
-  </div>
-  <p style="color:#aaa;font-size:13px;">A stream source is required to watch live matches.</p>
-</div>
-</script>
-<script>
 function connectStream(streamUrl) {
   const video = document.getElementById("liveVideo");
   const message = document.getElementById("streamMessage");
 
+  if (!streamUrl) return;
+
   video.src = streamUrl;
   message.style.display = "none";
-  video.play().catch(() => {});
+
+  video.play().catch(() => {
+    message.style.display = "flex";
+    message.textContent =
+      "Tap Play to start the stream, or check the stream source.";
+  });
 }
 
+loadFixtures();
+
+// Refresh scores and match status every 60 seconds.
+setInterval(loadFixtures, 60000);
+</script>
+
+</body>
+</html>
