@@ -409,11 +409,61 @@ async function loadBryanTVLiveScores() {
 
 loadBryanTVLiveScores();
 </script>
-  league: "Premier League",
-    home: "Arsenal",
-    away: "Chelsea",
-    homeIcon: "🔴",
-    awayIcon: "🔵"
-  },
+ <section id="bryantv-live" style="background:#fff;color:#222;padding:20px;border-radius:12px;margin:20px 0;">
+  <h2 style="color:#e50914;">🔴 BRYANTV LIVE SCORES</h2>
+  <p id="bryantv-status">Loading live matches...</p>
+  <div id="bryantv-live-list"></div>
+</section>
+
+<script>
+async function loadBryantTVScores() {
+  const status = document.getElementById('bryantv-status');
+  const list = document.getElementById('bryantv-live-list');
+
+  try {
+    const response = await fetch('/.netlify/functions/fixtures');
+    const data = await response.json();
+
+    if (!response.ok || !Array.isArray(data.response)) {
+      throw new Error('Scores unavailable');
+    }
+
+    const matches = data.response;
+
+    if (matches.length === 0) {
+      status.textContent = 'No live matches right now. Check back later!';
+      return;
+    }
+
+    status.textContent = matches.length + ' live matches';
+
+    const escapeHTML = value =>
+      String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char]));
+
+    list.innerHTML = matches.map(match => `
+      <article style="border:1px solid #ddd;border-radius:10px;padding:14px;margin:12px 0;">
+        <strong>${escapeHTML(match.league?.name)}</strong>
+        <div style="display:flex;justify-content:space-between;gap:10px;margin:12px 0;">
+          <span>${escapeHTML(match.teams?.home?.name)}</span>
+          <strong>${escapeHTML(match.goals?.home ?? 0)} - ${escapeHTML(match.goals?.away ?? 0)}</strong>
+          <span>${escapeHTML(match.teams?.away?.name)}</span>
+        </div>
+        <small>${escapeHTML(match.fixture?.status?.elapsed ?? '')}' · ${escapeHTML(match.fixture?.status?.long)}</small>
+        <p><a href="https://www.livesoccertv.com/" target="_blank" rel="noopener noreferrer">Find an official broadcaster</a></p>
+      </article>
+    `).join('');
+  } catch (error) {
+    status.textContent = 'Live scores are temporarily unavailable. Please try again later.';
+  }
+}
+
+loadBryantTVScores();
+</script>
 </body>
 </html>
