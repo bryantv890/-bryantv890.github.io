@@ -310,6 +310,7 @@ footer span {
   <br>
   <small>© 2026 B_STREAMTV</small>
 </footer>
+
 <script>
 const matches = [];
 </script>
@@ -449,5 +450,29 @@ async function loadBryantTVScores() {
 }
 
 loadBryantTVScores();
+<div id="stream-player" style="background:#05070d;color:white;padding:16px;border-radius:12px;margin:20px 0;font-family:Arial,sans-serif;">
+  <h2 style="margin-top:0;color:#ff3030;">🔴 B_STREAMTV LIVE</h2>
+  <div style="position:relative;width:100%;aspect-ratio:16/9;background:#111;border-radius:8px;overflow:hidden;">
+    <video id="liveVideo" controls playsinline preload="none"
+      style="width:100%;height:100%;display:block;background:#111;">
+      Your browser does not support HTML video.
+    </video>
+    <div id="streamMessage" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;color:#ddd;background:#111;">
+      ⚽ Live stream coming soon
+    </div>
+  </div>
+  <p style="color:#aaa;font-size:13px;">A stream source is required to watch live matches.</p>
+</div>
 </script>
+<script>
+function connectStream(streamUrl) {
+  const video = document.getElementById("liveVideo");
+  const message = document.getElementById("streamMessage");
+
+  video.src = streamUrl;
+  message.style.display = "none";
+  video.play().catch(() => {});
+}
+</script>
+
 </body>
