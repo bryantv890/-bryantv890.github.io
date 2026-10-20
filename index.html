@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e50914">
+<title>BRYANTV | Football Lives Here</title>
+
+<style>
+:root {
+  --red: #e50914;
+  --dark: #181818;
+  --white: #ffffff;
+  --light: #f5f5f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--light);
+  color: var(--dark);
+}
+
+header {
+  background: var(--white);
+  padding: 18px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--red);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 27px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: var(--red);
+}
+
+.live {
+  color: var(--red);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.hero {
+  padding: 45px 6%;
+  color: white;
+  background: linear-gradient(120deg, #a9000b, #ed1824, #650006);
+}
+
+.hero h1 {
+  font-size: clamp(32px, 7vw, 56px);
+  margin: 12px 0;
+}
+
+.hero p {
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+.button {
+  display: inline-block;
+  padding: 13px 20px;
+  background: white;
+  color: var(--red);
+  text-decoration: none;
+  border-radius: 7px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+main {
+  padding: 25px 6%;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-title h2 {
+  font-size: 23px;
+}
+
+.badge {
+  background: var(--red);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.leagues {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 5px 0 15px;
+}
+
+.league {
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  background: white;
+  padding: 11px 16px;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.league.active {
+  background: var(--red);
+  color: white;
+  border-color: var(--red);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 14px #00000008;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.teams {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  margin: 25px 0;
+  font-weight: bold;
+}
+
+.team {
+  flex: 1;
+}
+
+.crest {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.vs {
+  color: #888;
+  font-size: 12px;
+}
+
+.watch {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: var(--red);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.notice {
+  background: #fff1f1;
+  border-left: 4px solid var(--red);
+  padding: 15px;
+  line-height: 1.6;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+footer {
+  text-align: center;
+  background: #181818;
+  color: white;
+  padding: 25px 6%;
+  line-height: 1.8;
+  margin-top: 30px;
+}
+
+footer span {
+  color: #ff424b;
+}
+
+@media (max-width: 420px) {
+  .logo {
+    font-size: 23px;
+  }
+
+  .hero {
+    padding-top: 35px;
+    padding-bottom: 35px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">BRYAN<span>TV</span> ⚽</div>
+  <div class="live">● FOOTBALL HUB</div>
+</header>
+
+<section class="hero">
+  <div>WELCOME TO BRYANTV</div>
+  <h1>Football Lives Here.</h1>
+  <p>Your destination for football fixtures, match updates,
+  live scores and authorized football streams.</p>
+  <a class="button" href="#matches">Explore Matches ↓</a>
+</section>
+
+<main>
+
+  <div class="section-title">
+    <h2>🏆 Explore Leagues</h2>
+  </div>
+
+  <div class="leagues">
+    <button class="league active" data-league="All">All Matches</button>
+    <button class="league" data-league="Premier League">Premier League</button>
+    <button class="league" data-league="La Liga">La Liga</button>
+    <button class="league" data-league="Champions League">Champions League</button>
+  </div>
+
+  <div class="section-title" id="matches">
+    <h2>⚽ Featured Matches</h2>
+    <span class="badge">MATCH CENTRE</span>
+  </div>
+
+  <div class="grid" id="matchGrid"></div>
+
+  <br>
+
+  <div class="section-title">
+    <h2>📺 Watch Football</h2>
+  </div>
+
+  <div class="card">
+    <h3>Watch on BRYANTV</h3>
+    <p>Choose a match to watch through an authorized broadcaster.</p>
+    <div class="notice">
+      🔴 Live match videos will appear here when we connect an
+      authorized streaming source. No match is being broadcast
+      by this demo page yet.
+    </div>
+    <br>
+    <a class="watch"
+       href="https://www.livesoccertv.com/"
+       target="_blank"
+       rel="noopener noreferrer">
+       Find Official Broadcasters ↗
+    </a>
+  </div>
+
+  <br>
+
+  <div class="section-title">
+    <h2>📅 Match Information</h2>
+  </div>
+
+  <div class="card">
+    <p>We're building your football match centre!</p>
+    <p>Live scores, kickoff times and league tables can be
+    connected in our next development stage.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="logo">BRYAN<span>TV</span> ⚽</div>
+  Football lives here.
+  <br>
+  <small>Match information and authorized streams only.</small>
+  <br>
+  <small>© 2026 BRYANTV</small>
+</footer>
+
+<script>
+const matches = [
+  {
+    league: "Premier League",
+    home: "Arsenal",
+    away: "Chelsea",
+    homeIcon: "🔴",
+    awayIcon: "🔵"
+  },
+  {
+    league: "La Liga",
+    home: "Real Madrid",
+    away: "Barcelona",
+    homeIcon: "⚪",
+    awayIcon: "🔵🔴"
+  },
+  {
+    league: "Champions League",
+    home: "Bayern Munich",
+    away: "PSG",
+    homeIcon: "🔴",
+    awayIcon: "🔵"
+  }
+];
+
+const grid = document.getElementById("matchGrid");
+
+function renderMatches(league = "All") {
+  const filtered = league === "All"
+    ? matches
+    : matches.filter(match => match.league === league);
+
+  grid.innerHTML = filtered.map(match => `
+    <article class="card">
+      <div class="card-top">
+        <span>${match.league}</span>
+        <span>FIXTURE EXAMPLE</span>
+      </div>
+      <div class="teams">
+        <div class="team">
+          <span class="crest">${match.homeIcon}</span>
+          ${match.home}
+        </div>
+        <span class="vs">VS</span>
+        <div class="team">
+          <span class="crest">${match.awayIcon}</span>
+          ${match.away}
+        </div>
+      </div>
+      <button class="watch" onclick="showNotice()">
+        Match Details
+      </button>
+    </article>
+  `).join("");
+}
+
+function showNotice() {
+  alert("These are sample fixtures. Live match data and authorized streams will be connected in a later step.");
+}
+
+document.querySelectorAll(".league").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".league").forEach(item =>
+      item.classList.remove("active")
+    );
+
+    button.classList.add("active");
+    renderMatches(button.dataset.league);
+  });
+});
+
+renderMatches();
+</script>
+
+</body>
+</html>
