@@ -15,7 +15,6 @@
 }
  
 
-
 * {
   box-sizing: border-box;
 }
@@ -60,7 +59,6 @@ header {
   color: white;
   background: linear-gradient(120deg, #05070d, #0b1f3a, #163a63);
 }
-
 
 .hero h1 {
   font-size: clamp(32px, 7vw, 56px);
@@ -124,7 +122,6 @@ main {
   cursor: pointer;
   font-weight: bold;
 }
-
 
 .league.active {
   background: #163a63;
@@ -313,6 +310,8 @@ footer span {
 <script>
 const matches = [];
 
+const grid = document.getElementById("matchGrid"); 
+
 const grid = document.getElementById("matchGrid");
 
 function renderMatches(league = "All") {
@@ -392,7 +391,7 @@ async function loadBryanTVLiveScores() {
 
 loadBryanTVLiveScores();
 </script>
-<div id="stream-player"style="background:#fff;color:#222;padding:20px;border-radius:12px;margin:20px 0;">
+ <section id="bryantv-live" style="background:#fff;color:#222;padding:20px;border-radius:12px;margin:20px 0;">
   <h2 style="color:#e50914;">🔴 BRYANTV LIVE SCORES</h2>
   <p id="bryantv-status">Loading live matches...</p>
   <div id="bryantv-live-list"></div>
@@ -471,5 +470,3 @@ function connectStream(streamUrl) {
   video.play().catch(() => {});
 }
 </script>
-
-</body>
