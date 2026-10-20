@@ -378,6 +378,36 @@ document.querySelectorAll(".league").forEach(button => {
 
 renderMatches();
 </script>
+<script>
+async function loadBryanTVLiveScores() {
+  try {
+    const response = await fetch('/.netlify/functions/fixtures');
+    if (!response.ok) throw new Error('Scores unavailable');
 
+    const data = await response.json();
+
+    console.log('BRYANTV football data:', data);
+
+    const fixtures = data.response || [];
+
+    if (fixtures.length === 0) {
+      console.log('No matches are live right now.');
+      return;
+    }
+
+    console.log('Live matches:', fixtures.map(match => ({
+      home: match.teams.home.name,
+      away: match.teams.away.name,
+      homeScore: match.goals.home,
+      awayScore: match.goals.away,
+      status: match.fixture.status.long
+    })));
+  } catch (error) {
+    console.error('BRYANTV scores error:', error);
+  }
+}
+
+loadBryanTVLiveScores();
+</script>
 </body>
 </html>
