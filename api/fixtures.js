@@ -7,7 +7,7 @@ module.exports = async function handler(req, res) {
         error: "FOOTBALL_API_KEY is missing in Vercel."
       });
     }
-
+ 
     const response = await fetch(
       "https://v3.football.api-sports.io/fixtures?live=all",
       {
