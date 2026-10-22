@@ -1,25 +1,956 @@
-B_STREAMTV
-Football lives here · Live scores and match updates
-Log in / Create account
-Football lives here. ⚽
-Follow live football scores and match updates in one place. Scores refresh automatically when the live fixtures API is available.
-🔴 LIVE MATCHES
-Refresh scores
-Not updated yet
-Loading live matches…
-Watch football
-OFFICIAL BROADCASTERS
-DStv / SuperSport
-Check your subscription and local channel listings for licensed live coverage.
-Visit DStv
-OFFICIAL COMPETITION
-Premier League
-Official fixtures, match information and broadcast details.
-Visit Premier League
-AFRICAN FOOTBALL
-CAF
-Official African football news and competition information.
-Visit CAF
-Match data supplied by your configured API-Football account. Statistics and event details may depend on your API plan.
-B_STREAMTV · Football lives here
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#05070d">
+  <title>B_STREAMTV | Football Lives Here</title>
 
+  <style>
+    :root {
+      --bg: #05070d;
+      --panel: #0b1f3a;
+      --panel2: #102847;
+      --line: #203650;
+      --text: #f4f7fb;
+      --muted: #aab7c8;
+      --blue: #2563eb;
+      --green: #22c55e;
+      --red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 2px solid var(--blue);
+      padding: 15px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #60a5fa;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 10px var(--red);
+    }
+
+    .refresh-button {
+      background: var(--blue);
+      color: white;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 7px;
+      font-weight: bold;
+    }
+
+    .sports-nav {
+      display: flex;
+      gap: 8px;
+      padding: 13px 5%;
+      background: #080d16;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto;
+    }
+
+    .nav-button {
+      background: var(--panel);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 10px 16px;
+      border-radius: 7px;
+      white-space: nowrap;
+    }
+
+    .nav-button.active,
+    .nav-button:hover {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1500px;
+      margin: auto;
+      padding: 22px 5%;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #102847, #07101e 75%);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(24px, 4vw, 38px);
+      margin-bottom: 9px;
+    }
+
+    .hero h1 span {
+      color: #60a5fa;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr) 230px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .panel-title {
+      padding: 15px;
+      font-size: 14px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+    }
+
+    .competition-list {
+      padding: 8px;
+    }
+
+    .competition-button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 10px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .competition-button:hover,
+    .competition-button.active {
+      background: var(--panel2);
+      color: white;
+    }
+
+    .matches-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .matches-header h2 {
+      font-size: 17px;
+    }
+
+    .updated {
+      color: var(--muted);
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .matches-filter {
+      display: flex;
+      gap: 7px;
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto;
+    }
+
+    .filter-button {
+      background: #07101e;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .filter-button.active {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .match-list {
+      min-height: 120px;
+    }
+
+    .match-card {
+      padding: 15px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .match-card:last-child {
+      border-bottom: 0;
+    }
+
+    .league-name {
+      color: #93c5fd;
+      font-size: 11px;
+      margin-bottom: 13px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .match-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 85px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .team {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin: 9px 0;
+      font-size: 13px;
+    }
+
+    .team-name {
+      overflow-wrap: anywhere;
+    }
+
+    .team-score {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .match-status {
+      text-align: center;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 8px 4px;
+      border-radius: 6px;
+      background: #07101e;
+      color: var(--muted);
+    }
+
+    .match-status.live {
+      color: #fca5a5;
+      background: #35121a;
+    }
+
+    .match-status.finished {
+      color: #cbd5e1;
+    }
+
+    .match-status.upcoming {
+      color: #93c5fd;
+    }
+
+    .empty-state {
+      padding: 30px 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .error-state {
+      color: #fecaca;
+    }
+
+    .side-content {
+      padding: 15px;
+    }
+
+    .side-content p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .broadcaster {
+      display: block;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      color: #e2e8f0;
+    }
+
+    .broadcaster:last-child {
+      border-bottom: 0;
+    }
+
+    .broadcaster small {
+      display: block;
+      color: var(--muted);
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding: 12px;
+      background: #07101e;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 22px 5%;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 1000px) {
+      .content-grid {
+        grid-template-columns: 180px minmax(0, 1fr);
+      }
+
+      .right-sidebar {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      header {
+        padding: 13px 4%;
+      }
+
+      .logo {
+        font-size: 19px;
+      }
+
+      .tagline {
+        font-size: 10px;
+      }
+
+      .refresh-button {
+        padding: 9px 10px;
+        font-size: 11px;
+      }
+
+      .sports-nav {
+        padding: 10px 4%;
+      }
+
+      .page {
+        padding: 15px 4%;
+      }
+
+      .hero {
+        padding: 20px 16px;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .left-sidebar {
+        order: 2;
+      }
+
+      .main-content {
+        order: 1;
+      }
+
+      .right-sidebar {
+        order: 3;
+        grid-column: auto;
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .competition-list {
+        display: flex;
+        overflow-x: auto;
+        gap: 6px;
+      }
+
+      .competition-button {
+        width: auto;
+        white-space: nowrap;
+        margin: 0;
+      }
+
+      .match-row {
+        grid-template-columns: minmax(0, 1fr) 75px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <div class="logo">B_<span>STREAM</span>TV</div>
+      <div class="tagline">Football lives here</div>
+    </div>
+
+    <div class="header-right">
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        LIVE SCORES
+      </div>
+      <button class="refresh-button" id="refreshButton">Refresh</button>
+    </div>
+  </header>
+
+  <nav class="sports-nav">
+    <button class="nav-button active" data-filter="all">⚽ All Matches</button>
+    <button class="nav-button" data-filter="live">🔴 Live</button>
+    <button class="nav-button" data-filter="upcoming">Upcoming</button>
+    <button class="nav-button" data-filter="finished">Finished</button>
+  </nav>
+
+  <main class="page">
+    <section class="hero">
+      <h1>Football lives <span>here.</span> ⚽</h1>
+      <p>
+        Follow real football fixtures, live scores, match times and results
+        in one place. Match information refreshes automatically.
+      </p>
+    </section>
+
+    <div class="content-grid">
+      <aside class="left-sidebar">
+        <section class="panel">
+          <div class="panel-title">🏆 Competitions</div>
+          <div class="competition-list" id="competitionList">
+            <button class="competition-button active" data-league="all">
+              All Competitions
+            </button>
+          </div>
+        </section>
+      </aside>
+
+      <section class="main-content">
+        <div class="panel">
+          <div class="matches-header">
+            <h2 id="sectionTitle">Football Matches</h2>
+            <div class="updated" id="lastUpdated">Not updated yet</div>
+          </div>
+
+          <div class="matches-filter">
+            <button class="filter-button active" data-filter="all">All</button>
+            <button class="filter-button" data-filter="live">Live</button>
+            <button class="filter-button" data-filter="upcoming">Upcoming</button>
+            <button class="filter-button" data-filter="finished">Finished</button>
+          </div>
+
+          <div class="match-list" id="matchList">
+            <div class="empty-state">Connecting to football data...</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-sidebar">
+        <section class="panel">
+          <div class="panel-title">📺 Official Broadcasters</div>
+          <div class="side-content">
+            <div class="broadcaster">
+              DStv / SuperSport
+              <small>Check your local listings for match coverage.</small>
+            </div>
+            <div class="broadcaster">
+              Official League Broadcasters
+              <small>Broadcast availability depends on your country and competition.</small>
+            </div>
+            <div class="notice">
+              B_STREAMTV provides football scores and match information.
+              Watch matches through authorised broadcasters.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">ℹ️ About B_STREAMTV</div>
+          <div class="side-content">
+            <p>
+              Your place for football updates, live scores, upcoming fixtures
+              and completed match results.
+            </p>
+            <div class="notice">
+              Scores depend on the connected football data service and its
+              coverage.
+            </div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    B_STREAMTV · Football lives here · Scores and fixtures supplied by the
+    connected football data service.
+  </footer>
+
+  <script>
+    const FIXTURES_ENDPOINT = "/api/fixtures";
+    const REFRESH_INTERVAL = 60000;
+
+    const matchList = document.getElementById("matchList");
+    const lastUpdated = document.getElementById("lastUpdated");
+    const competitionList = document.getElementById("competitionList");
+    const sectionTitle = document.getElementById("sectionTitle");
+    const refreshButton = document.getElementById("refreshButton");
+
+    let allMatches = [];
+    let activeFilter = "all";
+    let activeLeague = "all";
+    let isLoading = false;
+
+    const LIVE_STATUSES = [
+      "1H", "2H", "HT", "ET", "BT", "P", "LIVE",
+      "INT", "IN_PLAY", "INPLAY"
+    ];
+
+    const FINISHED_STATUSES = [
+      "FT", "AET", "PEN", "FINISHED", "FULL_TIME"
+    ];
+
+    const UPCOMING_STATUSES = [
+      "NS", "TBD", "SCHEDULED", "NOT_STARTED"
+    ];
+
+    function getStatus(match) {
+      const raw = String(
+        match.fixture?.status?.short ||
+        match.status?.short ||
+        match.status ||
+        ""
+      ).toUpperCase();
+
+      if (LIVE_STATUSES.includes(raw)) return "live";
+      if (FINISHED_STATUSES.includes(raw)) return "finished";
+      if (UPCOMING_STATUSES.includes(raw)) return "upcoming";
+
+      const dateValue =
+        match.fixture?.date ||
+        match.date ||
+        match.utcDate;
+
+      if (dateValue) {
+        const matchDate = new Date(dateValue);
+
+        if (!Number.isNaN(matchDate.getTime())) {
+          if (matchDate.getTime() > Date.now()) return "upcoming";
+          return "finished";
+        }
+      }
+
+      return "upcoming";
+    }
+
+    function getMatchesFromResponse(data) {
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data.response)) return data.response;
+      if (Array.isArray(data.fixtures)) return data.fixtures;
+      if (Array.isArray(data.data)) return data.data;
+      if (Array.isArray(data.matches)) return data.matches;
+
+      if (Array.isArray(data.data?.response)) {
+        return data.data.response;
+      }
+
+      return [];
+    }
+
+    function getMatchDate(match) {
+      return (
+        match.fixture?.date ||
+        match.date ||
+        match.utcDate ||
+        null
+      );
+    }
+
+    function getTeamName(match, side) {
+      return (
+        match.teams?.[side]?.name ||
+        match[side]?.name ||
+        match[side] ||
+        (side === "home" ? "Home team" : "Away team")
+      );
+    }
+
+    function getScore(match, side) {
+      const value =
+        match.goals?.[side] ??
+        match.score?.[side] ??
+        match.score?.fullTime?.[side] ??
+        null;
+
+      return value === null || value === undefined ? "-" : value;
+    }
+
+    function getLeagueName(match) {
+      return (
+        match.league?.name ||
+        match.competition?.name ||
+        match.league_name ||
+        "Football"
+      );
+    }
+
+    function getElapsed(match) {
+      const elapsed =
+        match.fixture?.status?.elapsed ??
+        match.status?.elapsed ??
+        null;
+
+      if (elapsed !== null && elapsed !== undefined) {
+        return `${elapsed}'`;
+      }
+
+      const shortStatus = String(
+        match.fixture?.status?.short || ""
+      ).toUpperCase();
+
+      if (shortStatus === "HT") return "Half-time";
+      if (shortStatus === "FT") return "Full-time";
+      if (shortStatus === "NS") return "Not started";
+
+      return "";
+    }
+
+    function getDisplayTime(match, status) {
+      if (status === "live") {
+        return getElapsed(match) || "LIVE";
+      }
+
+      if (status === "finished") {
+        const raw =
+          match.fixture?.status?.short ||
+          match.status?.short ||
+          "";
+
+        return FINISHED_STATUSES.includes(String(raw).toUpperCase())
+          ? "FT"
+          : "Finished";
+      }
+
+      const dateValue = getMatchDate(match);
+
+      if (!dateValue) return "Upcoming";
+
+      const date = new Date(dateValue);
+
+      if (Number.isNaN(date.getTime())) return "Upcoming";
+
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function renderCompetitions() {
+      const leagues = [...new Set(
+        allMatches.map(getLeagueName).filter(Boolean)
+      )].sort((a, b) => a.localeCompare(b));
+
+      competitionList.innerHTML = `
+        <button class="competition-button ${
+          activeLeague === "all" ? "active" : ""
+        }" data-league="all">All Competitions</button>
+        ${leagues.map(league => `
+          <button class="competition-button ${
+            activeLeague === league ? "active" : ""
+          }" data-league="${escapeHTML(league)}">
+            ${escapeHTML(league)}
+          </button>
+        `).join("")}
+      `;
+    }
+
+    function renderMatches() {
+      let filtered = allMatches.filter(match => {
+        const status = getStatus(match);
+
+        const filterMatches =
+          activeFilter === "all" || status === activeFilter;
+
+        const leagueMatches =
+          activeLeague === "all" ||
+          getLeagueName(match) === activeLeague;
+
+        return filterMatches && leagueMatches;
+      });
+
+      const priority = {
+        live: 0,
+        upcoming: 1,
+        finished: 2
+      };
+
+      filtered.sort((a, b) => {
+        const statusDifference =
+          priority[getStatus(a)] - priority[getStatus(b)];
+
+        if (statusDifference !== 0) return statusDifference;
+
+        const dateA = new Date(getMatchDate(a) || 0).getTime();
+        const dateB = new Date(getMatchDate(b) || 0).getTime();
+
+        if (getStatus(a) === "finished") {
+          return dateB - dateA;
+        }
+
+        return dateA - dateB;
+      });
+
+      if (!filtered.length) {
+        matchList.innerHTML = `
+          <div class="empty-state">
+            No matches found for this selection.
+            <br>
+            Try another filter or check again later.
+          </div>
+        `;
+        return;
+      }
+
+      matchList.innerHTML = filtered.map(match => {
+        const status = getStatus(match);
+        const home = getTeamName(match, "home");
+        const away = getTeamName(match, "away");
+        const homeScore = getScore(match, "home");
+        const awayScore = getScore(match, "away");
+        const time = getDisplayTime(match, status);
+
+        return `
+          <article class="match-card">
+            <div class="league-name">
+              ${escapeHTML(getLeagueName(match))}
+            </div>
+
+            <div class="match-row">
+              <div>
+                <div class="team">
+                  <span class="team-name">${escapeHTML(home)}</span>
+                  <span class="team-score">${escapeHTML(homeScore)}</span>
+                </div>
+
+                <div class="team">
+                  <span class="team-name">${escapeHTML(away)}</span>
+                  <span class="team-score">${escapeHTML(awayScore)}</span>
+                </div>
+              </div>
+
+              <div class="match-status ${status}">
+                ${escapeHTML(time)}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function showError(message) {
+      matchList.innerHTML = `
+        <div class="empty-state error-state">
+          <strong>Football data is unavailable.</strong>
+          <br><br>
+          ${escapeHTML(message)}
+          <br><br>
+          Check that the Vercel API endpoint
+          <strong>/api/fixtures</strong> is deployed and working.
+          <br><br>
+          Tap Refresh to try again.
+        </div>
+      `;
+    }
+
+    async function loadMatches() {
+      if (isLoading) return;
+
+      isLoading = true;
+      refreshButton.disabled = true;
+      refreshButton.textContent = "Updating...";
+
+      try {
+        const response = await fetch(FIXTURES_ENDPOINT, {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned error ${response.status}.`);
+        }
+
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(
+            typeof data.error === "string"
+              ? data.error
+              : "The football data service reported an error."
+          );
+        }
+
+        const matches = getMatchesFromResponse(data);
+
+        if (!Array.isArray(matches)) {
+          throw new Error("The football data response was invalid.");
+        }
+
+        allMatches = matches;
+
+        renderCompetitions();
+        renderMatches();
+
+        lastUpdated.textContent =
+          "Updated " + new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          });
+
+      } catch (error) {
+        console.error("B_STREAMTV football data error:", error);
+
+        if (allMatches.length) {
+          renderMatches();
+          lastUpdated.textContent = "Update failed; showing last results";
+        } else {
+          showError(
+            error.message || "Could not connect to the football data service."
+          );
+        }
+      } finally {
+        isLoading = false;
+        refreshButton.disabled = false;
+        refreshButton.textContent = "Refresh";
+      }
+    }
+
+    function setFilter(filter) {
+      activeFilter = filter;
+
+      document.querySelectorAll("[data-filter]").forEach(button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.filter === filter
+        );
+      });
+
+      const titles = {
+        all: "Football Matches",
+        live: "Live Matches",
+        upcoming: "Upcoming Matches",
+        finished: "Finished Matches"
+      };
+
+      sectionTitle.textContent = titles[filter] || "Football Matches";
+      renderMatches();
+    }
+
+    document.querySelectorAll("[data-filter]").forEach(button => {
+      button.addEventListener("click", () => {
+        setFilter(button.dataset.filter);
+      });
+    });
+
+    competitionList.addEventListener("click", event => {
+      const button = event.target.closest("[data-league]");
+
+      if (!button) return;
+
+      activeLeague = button.dataset.league;
+      renderCompetitions();
+      renderMatches();
+    });
+
+    refreshButton.addEventListener("click", loadMatches);
+
+    loadMatches();
+    setInterval(loadMatches, REFRESH_INTERVAL);
+  </script>
+</body>
+</html>
