@@ -661,7 +661,7 @@ function renderFeaturedMatches(selectedLeague = "All") {
 
 async function loadFixtures() {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch("/api/fixtures", {
       cache: "no-store"
     });
 
