@@ -5,7 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#05070d">
   <title>B_STREAMTV | Football Lives Here</title>
+/* B_STREAMTV MOBILE WIDTH FIX */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
+* {
+  box-sizing: border-box;
+}
+
+.page {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 12px !important;
+  margin: 0 auto !important;
+}
+
+.content-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  width: 100% !important;
+  gap: 12px !important;
+}
+
+.left-sidebar,
+.main-content,
+.right-sidebar,
+.panel,
+.hero {
+  width: 100%;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.right-sidebar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.match-row {
+  grid-template-columns: minmax(0, 1fr) 70px !important;
+}
+
+.team-name {
+  overflow-wrap: anywhere;
+}
+
+.sports-nav {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (min-width: 900px) {
+  .content-grid {
+    grid-template-columns: 180px minmax(0, 1fr) 210px !important;
+  }
+
+  .right-sidebar {
+    display: block !important;
+  }
+}
   <style>
     :root {
       --bg: #05070d;
