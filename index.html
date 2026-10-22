@@ -5,69 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#05070d">
   <title>B_STREAMTV | Football Lives Here</title>
-/* B_STREAMTV MOBILE WIDTH FIX */
-html,
-body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
 
-* {
-  box-sizing: border-box;
-}
-
-.page {
-  width: 100% !important;
-  max-width: 100% !important;
-  padding: 12px !important;
-  margin: 0 auto !important;
-}
-
-.content-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  width: 100% !important;
-  gap: 12px !important;
-}
-
-.left-sidebar,
-.main-content,
-.right-sidebar,
-.panel,
-.hero {
-  width: 100%;
-  min-width: 0 !important;
-  max-width: 100% !important;
-}
-
-.right-sidebar {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-}
-
-.match-row {
-  grid-template-columns: minmax(0, 1fr) 70px !important;
-}
-
-.team-name {
-  overflow-wrap: anywhere;
-}
-
-.sports-nav {
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-@media (min-width: 900px) {
-  .content-grid {
-    grid-template-columns: 180px minmax(0, 1fr) 210px !important;
-  }
-
-  .right-sidebar {
-    display: block !important;
-  }
-}
   <style>
     :root {
       --bg: #05070d;
@@ -83,15 +21,22 @@ body {
 
     * {
       box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
-      min-height: 100vh;
+      line-height: 1.5;
     }
 
     button {
@@ -99,845 +44,693 @@ body {
       cursor: pointer;
     }
 
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 12px;
+    }
+
     header {
-      background: var(--panel);
-      border-bottom: 2px solid var(--blue);
-      padding: 15px 5%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
-      position: sticky;
-      top: 0;
-      z-index: 20;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-bottom: 3px solid var(--blue);
+      border-radius: 14px;
+      padding: 16px;
     }
 
-    .logo {
-      font-size: 23px;
-      font-weight: 900;
-      letter-spacing: -1px;
+    .brand {
+      min-width: 0;
     }
 
-    .logo span {
-      color: #60a5fa;
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(20px, 5vw, 28px);
+      letter-spacing: 1px;
+      overflow-wrap: anywhere;
     }
 
-    .tagline {
+    .brand p {
+      margin: 3px 0 0;
       color: var(--muted);
-      font-size: 12px;
-      margin-top: 4px;
+      font-size: 13px;
     }
 
-    .header-right {
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .live-indicator {
-      display: flex;
+    .status-pill {
+      display: inline-flex;
       align-items: center;
-      gap: 7px;
-      color: #fff;
+      gap: 6px;
+      color: var(--green);
       font-size: 12px;
       font-weight: bold;
     }
 
-    .live-dot {
+    .status-dot {
       width: 8px;
       height: 8px;
+      background: var(--green);
       border-radius: 50%;
-      background: var(--red);
-      box-shadow: 0 0 10px var(--red);
     }
 
-    .refresh-button {
+    .refresh-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 13px;
       background: var(--blue);
       color: white;
-      border: 0;
-      padding: 10px 14px;
-      border-radius: 7px;
       font-weight: bold;
     }
 
-    .sports-nav {
+    .refresh-btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    nav {
       display: flex;
       gap: 8px;
-      padding: 13px 5%;
-      background: #080d16;
-      border-bottom: 1px solid var(--line);
-      overflow-x: auto;
-    }
-
-    .nav-button {
+      margin: 14px 0;
+      padding: 8px;
       background: var(--panel);
-      color: var(--muted);
-      border: 1px solid var(--line);
-      padding: 10px 16px;
-      border-radius: 7px;
-      white-space: nowrap;
-    }
-
-    .nav-button.active,
-    .nav-button:hover {
-      background: var(--blue);
-      color: white;
-      border-color: var(--blue);
-    }
-
-.page {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 16px 12px;
-}
-
-.content-grid {
-  grid-template-columns: 180px minmax(0, 1fr);
-  gap: 12px;
-}
-
-.right-sidebar {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-@media (max-width: 650px) {
-  .page {
-    padding: 12px 8px;
-  }
-
-  .content-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .right-sidebar {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-    .hero {
-      background: linear-gradient(120deg, #102847, #07101e 75%);
       border: 1px solid var(--line);
       border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 22px;
+      overflow-x: auto;
+      scrollbar-width: thin;
     }
 
-    .hero h1 {
-      font-size: clamp(24px, 4vw, 38px);
-      margin-bottom: 9px;
+    .filter-btn {
+      flex: 0 0 auto;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 9px 15px;
+      color: var(--muted);
+      background: transparent;
+      font-weight: bold;
     }
 
-    .hero h1 span {
-      color: #60a5fa;
+    .filter-btn.active {
+      color: white;
+      background: var(--blue);
+    }
+
+    .hero {
+      padding: 20px 4px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 6vw, 34px);
+      line-height: 1.2;
     }
 
     .hero p {
+      margin: 0;
       color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
+      max-width: 650px;
     }
 
     .content-grid {
       display: grid;
-      grid-template-columns: 210px minmax(0, 1fr) 230px;
-      gap: 18px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
       align-items: start;
     }
 
     .panel {
+      min-width: 0;
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 18px;
+      border-radius: 12px;
+      padding: 14px;
     }
 
-    .panel-title {
-      padding: 15px;
-      font-size: 14px;
-      font-weight: bold;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,0.025);
-    }
-
-    .competition-list {
-      padding: 8px;
-    }
-
-    .competition-button {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 12px 10px;
-      border: 0;
-      border-radius: 6px;
-      background: transparent;
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 3px;
-    }
-
-    .competition-button:hover,
-    .competition-button.active {
-      background: var(--panel2);
-      color: white;
-    }
-
-    .matches-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding: 15px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .matches-header h2 {
-      font-size: 17px;
-    }
-
-    .updated {
-      color: var(--muted);
-      font-size: 11px;
-      text-align: right;
-    }
-
-    .matches-filter {
-      display: flex;
-      gap: 7px;
-      padding: 12px 15px;
-      border-bottom: 1px solid var(--line);
-      overflow-x: auto;
-    }
-
-    .filter-button {
-      background: #07101e;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .filter-button.active {
-      background: var(--blue);
-      color: white;
-      border-color: var(--blue);
-    }
-
-    .match-list {
-      min-height: 120px;
-    }
-
-    .match-card {
-      padding: 15px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .match-card:last-child {
-      border-bottom: 0;
-    }
-
-    .league-name {
-      color: #93c5fd;
-      font-size: 11px;
-      margin-bottom: 13px;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-    }
-
-    .match-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 85px;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .team {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin: 9px 0;
-      font-size: 13px;
-    }
-
-    .team-name {
-      overflow-wrap: anywhere;
-    }
-
-    .team-score {
-      font-weight: bold;
+    .panel h3 {
+      margin: 0 0 12px;
       font-size: 16px;
     }
 
-    .match-status {
-      text-align: center;
-      font-size: 11px;
-      font-weight: bold;
-      padding: 8px 4px;
-      border-radius: 6px;
-      background: #07101e;
+    .competition-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .competition-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px;
+      color: var(--text);
+      background: var(--panel2);
+      overflow-wrap: anywhere;
+    }
+
+    .competition-btn.active {
+      border-color: var(--blue);
+    }
+
+    .matches-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .matches-heading h3 {
+      margin: 0;
+    }
+
+    .muted {
       color: var(--muted);
+      font-size: 12px;
     }
 
-    .match-status.live {
-      color: #fca5a5;
-      background: #35121a;
+    .match-list {
+      display: grid;
+      gap: 10px;
     }
 
-    .match-status.finished {
-      color: #cbd5e1;
+    .match-card {
+      min-width: 0;
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 13px;
     }
 
-    .match-status.upcoming {
-      color: #93c5fd;
+    .match-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .league-name {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .live-label {
+      flex: 0 0 auto;
+      color: var(--red);
+      font-weight: bold;
+    }
+
+    .team-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+    }
+
+    .team {
+      min-width: 0;
+      font-size: 14px;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .team:last-child {
+      text-align: right;
+    }
+
+    .score {
+      min-width: 45px;
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .match-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 9px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .empty-state {
-      padding: 30px 18px;
       text-align: center;
+      padding: 28px 12px;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
+      background: var(--panel2);
+      border-radius: 10px;
+      border: 1px dashed var(--line);
     }
 
-    .error-state {
-      color: #fecaca;
-    }
-
-    .side-content {
-      padding: 15px;
-    }
-
-    .side-content p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
+    .right-sidebar {
+      display: grid;
+      gap: 14px;
     }
 
     .broadcaster {
-      display: block;
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid var(--line);
-      font-size: 13px;
-      color: #e2e8f0;
     }
 
     .broadcaster:last-child {
       border-bottom: 0;
     }
 
-    .broadcaster small {
+    .broadcaster strong {
       display: block;
-      color: var(--muted);
-      margin-top: 5px;
-      line-height: 1.5;
+      font-size: 14px;
     }
 
-    .notice {
-      margin-top: 14px;
-      padding: 12px;
-      background: #07101e;
-      border: 1px solid var(--line);
-      border-radius: 7px;
+    .broadcaster span {
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.6;
+    }
+
+    .info-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
     }
 
     footer {
-      border-top: 1px solid var(--line);
-      padding: 22px 5%;
+      margin-top: 20px;
+      padding: 18px 8px;
       text-align: center;
       color: var(--muted);
       font-size: 12px;
-      margin-top: 20px;
+      border-top: 1px solid var(--line);
     }
 
-    @media (max-width: 1000px) {
+    @media (min-width: 651px) and (max-width: 899px) {
       .content-grid {
-        grid-template-columns: 180px minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .matches-panel {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+
+      .competition-panel {
+        grid-column: 1;
       }
 
       .right-sidebar {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
+        grid-column: 2;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .page {
+        padding: 22px 16px;
+      }
+
+      .content-grid {
+        grid-template-columns: 180px minmax(0, 1fr) 210px;
+      }
+
+      .matches-panel,
+      .competition-panel,
+      .right-sidebar {
+        grid-column: auto;
+        grid-row: auto;
       }
     }
 
     @media (max-width: 650px) {
-      header {
-        padding: 13px 4%;
-      }
-
-      .logo {
-        font-size: 19px;
-      }
-
-      .tagline {
-        font-size: 10px;
-      }
-
-      .refresh-button {
-        padding: 9px 10px;
-        font-size: 11px;
-      }
-
-      .sports-nav {
-        padding: 10px 4%;
-      }
-
       .page {
-        padding: 15px 4%;
+        padding: 10px 8px;
+      }
+
+      header {
+        padding: 12px;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
       }
 
       .hero {
-        padding: 20px 16px;
+        padding: 16px 3px;
       }
 
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .left-sidebar {
-        order: 2;
-      }
-
-      .main-content {
-        order: 1;
-      }
-
-      .right-sidebar {
-        order: 3;
-        grid-column: auto;
-        grid-template-columns: 1fr;
-        gap: 0;
+      .panel {
+        padding: 11px;
       }
 
       .competition-list {
-        display: flex;
+        flex-direction: row;
         overflow-x: auto;
-        gap: 6px;
+        padding-bottom: 4px;
       }
 
-      .competition-button {
+      .competition-btn {
         width: auto;
-        white-space: nowrap;
-        margin: 0;
+        flex: 0 0 auto;
+        max-width: 210px;
       }
 
-      .match-row {
-        grid-template-columns: minmax(0, 1fr) 75px;
+      .team {
+        font-size: 12px;
+      }
+
+      .score {
+        font-size: 17px;
+        min-width: 38px;
+      }
+
+      .match-card {
+        padding: 10px;
       }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div>
-      <div class="logo">B_<span>STREAM</span>TV</div>
-      <div class="tagline">Football lives here</div>
-    </div>
+  <div class="page">
 
-    <div class="header-right">
-      <div class="live-indicator">
-        <span class="live-dot"></span>
-        LIVE SCORES
+    <header>
+      <div class="brand">
+        <h1>B_STREAMTV</h1>
+        <p>Football lives here · Live scores and match updates</p>
       </div>
-      <button class="refresh-button" id="refreshButton">Refresh</button>
-    </div>
-  </header>
 
-  <nav class="sports-nav">
-    <button class="nav-button active" data-filter="all">⚽ All Matches</button>
-    <button class="nav-button" data-filter="live">🔴 Live</button>
-    <button class="nav-button" data-filter="upcoming">Upcoming</button>
-    <button class="nav-button" data-filter="finished">Finished</button>
-  </nav>
+      <div class="header-actions">
+        <span class="status-pill">
+          <span class="status-dot"></span>
+          LIVE SCORES
+        </span>
+        <button class="refresh-btn" id="refreshBtn" type="button">
+          Refresh scores
+        </button>
+      </div>
+    </header>
 
-  <main class="page">
+    <nav aria-label="Match filters">
+      <button class="filter-btn active" data-filter="all" type="button">All matches</button>
+      <button class="filter-btn" data-filter="live" type="button">🔴 Live</button>
+      <button class="filter-btn" data-filter="upcoming" type="button">Upcoming</button>
+      <button class="filter-btn" data-filter="finished" type="button">Finished</button>
+    </nav>
+
     <section class="hero">
-      <h1>Football lives <span>here.</span> ⚽</h1>
+      <h2>Football lives here. ⚽</h2>
       <p>
-        Follow real football fixtures, live scores, match times and results
-        in one place. Match information refreshes automatically.
+        Follow live football scores and match updates in one place.
+        Scores refresh automatically when the football data service is available.
       </p>
     </section>
 
-    <div class="content-grid">
-      <aside class="left-sidebar">
-        <section class="panel">
-          <div class="panel-title">🏆 Competitions</div>
-          <div class="competition-list" id="competitionList">
-            <button class="competition-button active" data-league="all">
-              All Competitions
-            </button>
-          </div>
-        </section>
+    <main class="content-grid">
+
+      <aside class="panel competition-panel">
+        <h3>Competitions</h3>
+        <div class="competition-list">
+          <button class="competition-btn active" data-league="all" type="button">
+            All competitions
+          </button>
+          <button class="competition-btn" data-league="Premier League" type="button">
+            Premier League
+          </button>
+          <button class="competition-btn" data-league="La Liga" type="button">
+            La Liga
+          </button>
+          <button class="competition-btn" data-league="Serie A" type="button">
+            Serie A
+          </button>
+          <button class="competition-btn" data-league="Bundesliga" type="button">
+            Bundesliga
+          </button>
+          <button class="competition-btn" data-league="Ligue 1" type="button">
+            Ligue 1
+          </button>
+          <button class="competition-btn" data-league="Champions League" type="button">
+            Champions League
+          </button>
+        </div>
       </aside>
 
-      <section class="main-content">
-        <div class="panel">
-          <div class="matches-header">
-            <h2 id="sectionTitle">Football Matches</h2>
-            <div class="updated" id="lastUpdated">Not updated yet</div>
-          </div>
+      <section class="panel matches-panel">
+        <div class="matches-heading">
+          <h3>Football matches</h3>
+          <span class="muted" id="lastUpdated">Waiting for scores</span>
+        </div>
 
-          <div class="matches-filter">
-            <button class="filter-button active" data-filter="all">All</button>
-            <button class="filter-button" data-filter="live">Live</button>
-            <button class="filter-button" data-filter="upcoming">Upcoming</button>
-            <button class="filter-button" data-filter="finished">Finished</button>
-          </div>
-
-          <div class="match-list" id="matchList">
-            <div class="empty-state">Connecting to football data...</div>
+        <div class="match-list" id="matchList">
+          <div class="empty-state">
+            Loading football matches…
           </div>
         </div>
       </section>
 
       <aside class="right-sidebar">
         <section class="panel">
-          <div class="panel-title">📺 Official Broadcasters</div>
-          <div class="side-content">
-            <div class="broadcaster">
-              DStv / SuperSport
-              <small>Check your local listings for match coverage.</small>
-            </div>
-            <div class="broadcaster">
-              Official League Broadcasters
-              <small>Broadcast availability depends on your country and competition.</small>
-            </div>
-            <div class="notice">
-              B_STREAMTV provides football scores and match information.
-              Watch matches through authorised broadcasters.
-            </div>
+          <h3>Official broadcasters</h3>
+
+          <div class="broadcaster">
+            <strong>DStv / SuperSport</strong>
+            <span>Check your local sports channels.</span>
           </div>
+
+          <div class="broadcaster">
+            <strong>Official competition broadcasters</strong>
+            <span>Availability depends on your country and competition.</span>
+          </div>
+
+          <p class="info-text" style="margin-top:12px;">
+            B_STREAMTV provides score updates. Watch live matches through
+            authorised broadcasters.
+          </p>
         </section>
 
         <section class="panel">
-          <div class="panel-title">ℹ️ About B_STREAMTV</div>
-          <div class="side-content">
-            <p>
-              Your place for football updates, live scores, upcoming fixtures
-              and completed match results.
-            </p>
-            <div class="notice">
-              Scores depend on the connected football data service and its
-              coverage.
-            </div>
-          </div>
+          <h3>About B_STREAMTV</h3>
+          <p class="info-text">
+            Your place for football scores and match updates. Match information
+            appears when the connected football data service provides it.
+          </p>
         </section>
       </aside>
-    </div>
-  </main>
 
-  <footer>
-    B_STREAMTV · Football lives here · Scores and fixtures supplied by the
-    connected football data service.
-  </footer>
+    </main>
+
+    <footer>
+      B_STREAMTV · Football lives here ⚽
+    </footer>
+
+  </div>
 
   <script>
     const FIXTURES_ENDPOINT = "/api/fixtures";
     const REFRESH_INTERVAL = 60000;
 
     const matchList = document.getElementById("matchList");
+    const refreshBtn = document.getElementById("refreshBtn");
     const lastUpdated = document.getElementById("lastUpdated");
-    const competitionList = document.getElementById("competitionList");
-    const sectionTitle = document.getElementById("sectionTitle");
-    const refreshButton = document.getElementById("refreshButton");
 
     let allMatches = [];
     let activeFilter = "all";
     let activeLeague = "all";
-    let isLoading = false;
 
-    const LIVE_STATUSES = [
-      "1H", "2H", "HT", "ET", "BT", "P", "LIVE",
-      "INT", "IN_PLAY", "INPLAY"
-    ];
-
-    const FINISHED_STATUSES = [
-      "FT", "AET", "PEN", "FINISHED", "FULL_TIME"
-    ];
-
-    const UPCOMING_STATUSES = [
-      "NS", "TBD", "SCHEDULED", "NOT_STARTED"
-    ];
+    function textValue(value, fallback = "Unknown") {
+      if (value === undefined || value === null || value === "") {
+        return fallback;
+      }
+      return String(value);
+    }
 
     function getStatus(match) {
-      const raw = String(
-        match.fixture?.status?.short ||
-        match.status?.short ||
-        match.status ||
-        ""
+      const status = match.fixture?.status || match.status || {};
+      const short = String(
+        status.short || match.status_short || match.status || ""
       ).toUpperCase();
 
-      if (LIVE_STATUSES.includes(raw)) return "live";
-      if (FINISHED_STATUSES.includes(raw)) return "finished";
-      if (UPCOMING_STATUSES.includes(raw)) return "upcoming";
+      if (
+        ["1H", "HT", "2H", "ET", "BT", "P", "LIVE", "IN_PLAY"].includes(short)
+      ) {
+        return "live";
+      }
 
-      const dateValue =
-        match.fixture?.date ||
-        match.date ||
-        match.utcDate;
+      if (["FT", "AET", "PEN", "ENDED", "FINISHED"].includes(short)) {
+        return "finished";
+      }
 
-      if (dateValue) {
-        const matchDate = new Date(dateValue);
+      if (["PST", "CANC", "ABD", "AWD", "WO"].includes(short)) {
+        return "finished";
+      }
 
-        if (!Number.isNaN(matchDate.getTime())) {
-          if (matchDate.getTime() > Date.now()) return "upcoming";
-          return "finished";
-        }
+      const timestamp = match.fixture?.timestamp || match.timestamp;
+      if (timestamp && Number(timestamp) * 1000 > Date.now()) {
+        return "upcoming";
       }
 
       return "upcoming";
     }
 
-    function getMatchesFromResponse(data) {
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data.response)) return data.response;
-      if (Array.isArray(data.fixtures)) return data.fixtures;
-      if (Array.isArray(data.data)) return data.data;
-      if (Array.isArray(data.matches)) return data.matches;
+    function getMinute(match) {
+      const status = match.fixture?.status || match.status || {};
+      const elapsed = status.elapsed ?? match.elapsed;
 
-      if (Array.isArray(data.data?.response)) {
+      if (elapsed !== undefined && elapsed !== null) {
+        return `${elapsed}'`;
+      }
+
+      const short = String(status.short || "").toUpperCase();
+
+      if (short === "HT") return "Half-time";
+      if (["FT", "AET", "PEN"].includes(short)) return "Full-time";
+      if (short === "NS") return "Not started";
+
+      return textValue(short, "Match");
+    }
+
+    function normalizeMatch(match) {
+      const home = match.teams?.home || match.homeTeam || match.home || {};
+      const away = match.teams?.away || match.awayTeam || match.away || {};
+      const league = match.league || match.competition || {};
+      const goals = match.goals || match.score || {};
+
+      const homeScore =
+        goals.home ?? match.home_score ?? match.homeScore ?? null;
+
+      const awayScore =
+        goals.away ?? match.away_score ?? match.awayScore ?? null;
+
+      return {
+        original: match,
+        home: textValue(home.name || home.team_name || home),
+        away: textValue(away.name || away.team_name || away),
+        homeScore,
+        awayScore,
+        league: textValue(league.name || league.league_name || league, "Football"),
+        status: getStatus(match),
+        minute: getMinute(match),
+        date: match.fixture?.date || match.date || match.start_time || "",
+        statusShort: String(
+          (match.fixture?.status || match.status || {}).short || ""
+        ).toUpperCase()
+      };
+    }
+
+    function extractMatches(data) {
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.response)) return data.response;
+      if (Array.isArray(data?.fixtures)) return data.fixtures;
+      if (Array.isArray(data?.matches)) return data.matches;
+      if (Array.isArray(data?.data)) return data.data;
+
+      if (Array.isArray(data?.data?.response)) {
         return data.data.response;
       }
 
       return [];
     }
 
-    function getMatchDate(match) {
-      return (
-        match.fixture?.date ||
-        match.date ||
-        match.utcDate ||
-        null
-      );
-    }
-
-    function getTeamName(match, side) {
-      return (
-        match.teams?.[side]?.name ||
-        match[side]?.name ||
-        match[side] ||
-        (side === "home" ? "Home team" : "Away team")
-      );
-    }
-
-    function getScore(match, side) {
-      const value =
-        match.goals?.[side] ??
-        match.score?.[side] ??
-        match.score?.fullTime?.[side] ??
-        null;
-
-      return value === null || value === undefined ? "-" : value;
-    }
-
-    function getLeagueName(match) {
-      return (
-        match.league?.name ||
-        match.competition?.name ||
-        match.league_name ||
-        "Football"
-      );
-    }
-
-    function getElapsed(match) {
-      const elapsed =
-        match.fixture?.status?.elapsed ??
-        match.status?.elapsed ??
-        null;
-
-      if (elapsed !== null && elapsed !== undefined) {
-        return `${elapsed}'`;
-      }
-
-      const shortStatus = String(
-        match.fixture?.status?.short || ""
-      ).toUpperCase();
-
-      if (shortStatus === "HT") return "Half-time";
-      if (shortStatus === "FT") return "Full-time";
-      if (shortStatus === "NS") return "Not started";
-
-      return "";
-    }
-
-    function getDisplayTime(match, status) {
-      if (status === "live") {
-        return getElapsed(match) || "LIVE";
-      }
-
-      if (status === "finished") {
-        const raw =
-          match.fixture?.status?.short ||
-          match.status?.short ||
-          "";
-
-        return FINISHED_STATUSES.includes(String(raw).toUpperCase())
-          ? "FT"
-          : "Finished";
-      }
-
-      const dateValue = getMatchDate(match);
-
-      if (!dateValue) return "Upcoming";
-
-      const date = new Date(dateValue);
-
-      if (Number.isNaN(date.getTime())) return "Upcoming";
-
-      return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
     function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[char]);
-    }
-
-    function renderCompetitions() {
-      const leagues = [...new Set(
-        allMatches.map(getLeagueName).filter(Boolean)
-      )].sort((a, b) => a.localeCompare(b));
-
-      competitionList.innerHTML = `
-        <button class="competition-button ${
-          activeLeague === "all" ? "active" : ""
-        }" data-league="all">All Competitions</button>
-        ${leagues.map(league => `
-          <button class="competition-button ${
-            activeLeague === league ? "active" : ""
-          }" data-league="${escapeHTML(league)}">
-            ${escapeHTML(league)}
-          </button>
-        `).join("")}
-      `;
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
     function renderMatches() {
-      let filtered = allMatches.filter(match => {
-        const status = getStatus(match);
+      let matches = allMatches;
 
-        const filterMatches =
-          activeFilter === "all" || status === activeFilter;
+      if (activeFilter !== "all") {
+        matches = matches.filter(match => match.status === activeFilter);
+      }
 
-        const leagueMatches =
-          activeLeague === "all" ||
-          getLeagueName(match) === activeLeague;
+      if (activeLeague !== "all") {
+        matches = matches.filter(match =>
+          match.league.toLowerCase().includes(activeLeague.toLowerCase())
+        );
+      }
 
-        return filterMatches && leagueMatches;
-      });
-
-      const priority = {
-        live: 0,
-        upcoming: 1,
-        finished: 2
-      };
-
-      filtered.sort((a, b) => {
-        const statusDifference =
-          priority[getStatus(a)] - priority[getStatus(b)];
-
-        if (statusDifference !== 0) return statusDifference;
-
-        const dateA = new Date(getMatchDate(a) || 0).getTime();
-        const dateB = new Date(getMatchDate(b) || 0).getTime();
-
-        if (getStatus(a) === "finished") {
-          return dateB - dateA;
-        }
-
-        return dateA - dateB;
-      });
-
-      if (!filtered.length) {
+      if (!matches.length) {
         matchList.innerHTML = `
           <div class="empty-state">
             No matches found for this selection.
-            <br>
-            Try another filter or check again later.
           </div>
         `;
         return;
       }
 
-      matchList.innerHTML = filtered.map(match => {
-        const status = getStatus(match);
-        const home = getTeamName(match, "home");
-        const away = getTeamName(match, "away");
-        const homeScore = getScore(match, "home");
-        const awayScore = getScore(match, "away");
-        const time = getDisplayTime(match, status);
+      matchList.innerHTML = matches.map(match => {
+        const isLive = match.status === "live";
+        const scoresAvailable =
+          match.homeScore !== null && match.awayScore !== null;
+
+        const score = scoresAvailable
+          ? `${escapeHTML(match.homeScore)} - ${escapeHTML(match.awayScore)}`
+          : "vs";
+
+        let matchTime = match.minute;
+
+        if (match.status === "upcoming" && match.date) {
+          const date = new Date(match.date);
+
+          if (!Number.isNaN(date.getTime())) {
+            matchTime = date.toLocaleString([], {
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit"
+            });
+          }
+        }
+
+        if (match.status === "finished") {
+          matchTime = "Full-time";
+        }
 
         return `
           <article class="match-card">
-            <div class="league-name">
-              ${escapeHTML(getLeagueName(match))}
+            <div class="match-top">
+              <span class="league-name">${escapeHTML(match.league)}</span>
+              <span class="${isLive ? "live-label" : ""}">
+                ${isLive ? "🔴 LIVE" : escapeHTML(matchTime)}
+              </span>
             </div>
 
-            <div class="match-row">
-              <div>
-                <div class="team">
-                  <span class="team-name">${escapeHTML(home)}</span>
-                  <span class="team-score">${escapeHTML(homeScore)}</span>
-                </div>
+            <div class="team-row">
+              <div class="team">${escapeHTML(match.home)}</div>
+              <div class="score">${score}</div>
+              <div class="team">${escapeHTML(match.away)}</div>
+            </div>
 
-                <div class="team">
-                  <span class="team-name">${escapeHTML(away)}</span>
-                  <span class="team-score">${escapeHTML(awayScore)}</span>
-                </div>
-              </div>
-
-              <div class="match-status ${status}">
-                ${escapeHTML(time)}
-              </div>
+            <div class="match-bottom">
+              <span>${escapeHTML(match.statusShort || match.status)}</span>
+              <span>${isLive ? escapeHTML(match.minute) : "Match updates"}</span>
             </div>
           </article>
         `;
       }).join("");
     }
 
-    function showError(message) {
-      matchList.innerHTML = `
-        <div class="empty-state error-state">
-          <strong>Football data is unavailable.</strong>
-          <br><br>
-          ${escapeHTML(message)}
-          <br><br>
-          Check that the Vercel API endpoint
-          <strong>/api/fixtures</strong> is deployed and working.
-          <br><br>
-          Tap Refresh to try again.
-        </div>
-      `;
-    }
-
-    async function loadMatches() {
-      if (isLoading) return;
-
-      isLoading = true;
-      refreshButton.disabled = true;
-      refreshButton.textContent = "Updating...";
+    async function loadLiveScores() {
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = "Refreshing…";
 
       try {
         const response = await fetch(FIXTURES_ENDPOINT, {
@@ -949,96 +742,80 @@ body {
         });
 
         if (!response.ok) {
-          throw new Error(`Server returned error ${response.status}.`);
+          throw new Error(`Football data request failed (${response.status})`);
         }
 
         const data = await response.json();
 
-        if (data.error) {
+        if (data?.error) {
           throw new Error(
-            typeof data.error === "string"
-              ? data.error
-              : "The football data service reported an error."
+            typeof data.error === "string" ? data.error : "Football data error"
           );
         }
 
-        const matches = getMatchesFromResponse(data);
+        const fixtures = extractMatches(data);
 
-        if (!Array.isArray(matches)) {
-          throw new Error("The football data response was invalid.");
-        }
+        allMatches = fixtures.map(normalizeMatch);
 
-        allMatches = matches;
-
-        renderCompetitions();
         renderMatches();
 
+        const now = new Date();
         lastUpdated.textContent =
-          "Updated " + new Date().toLocaleTimeString([], {
+          "Updated " + now.toLocaleTimeString([], {
             hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
+            minute: "2-digit"
           });
 
       } catch (error) {
-        console.error("B_STREAMTV football data error:", error);
+        console.error("B_STREAMTV scores error:", error);
 
         if (allMatches.length) {
           renderMatches();
-          lastUpdated.textContent = "Update failed; showing last results";
+          lastUpdated.textContent = "Could not refresh";
         } else {
-          showError(
-            error.message || "Could not connect to the football data service."
-          );
+          matchList.innerHTML = `
+            <div class="empty-state">
+              Football scores are temporarily unavailable.
+              <br><br>
+              Please try refreshing in a moment.
+            </div>
+          `;
+          lastUpdated.textContent = "Scores unavailable";
         }
       } finally {
-        isLoading = false;
-        refreshButton.disabled = false;
-        refreshButton.textContent = "Refresh";
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = "Refresh scores";
       }
     }
 
-    function setFilter(filter) {
-      activeFilter = filter;
-
-      document.querySelectorAll("[data-filter]").forEach(button => {
-        button.classList.toggle(
-          "active",
-          button.dataset.filter === filter
-        );
-      });
-
-      const titles = {
-        all: "Football Matches",
-        live: "Live Matches",
-        upcoming: "Upcoming Matches",
-        finished: "Finished Matches"
-      };
-
-      sectionTitle.textContent = titles[filter] || "Football Matches";
-      renderMatches();
-    }
-
-    document.querySelectorAll("[data-filter]").forEach(button => {
+    document.querySelectorAll(".filter-btn").forEach(button => {
       button.addEventListener("click", () => {
-        setFilter(button.dataset.filter);
+        document.querySelectorAll(".filter-btn").forEach(item => {
+          item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        renderMatches();
       });
     });
 
-    competitionList.addEventListener("click", event => {
-      const button = event.target.closest("[data-league]");
+    document.querySelectorAll(".competition-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".competition-btn").forEach(item => {
+          item.classList.remove("active");
+        });
 
-      if (!button) return;
-
-      activeLeague = button.dataset.league;
-      renderCompetitions();
-      renderMatches();
+        button.classList.add("active");
+        activeLeague = button.dataset.league;
+        renderMatches();
+      });
     });
 
-    refreshButton.addEventListener("click", loadMatches);
+    refreshBtn.addEventListener("click", loadLiveScores);
 
-    loadMatches();
-    setInterval(loadMatches, REFRESH_INTERVAL);
+    loadLiveScores();
+    setInterval(loadLiveScores, REFRESH_INTERVAL);
   </script>
 </body>
 </html>
