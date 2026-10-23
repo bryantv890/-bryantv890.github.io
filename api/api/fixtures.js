@@ -1,88 +1,96 @@
-export default async function handler(req, res) {
-res.setHeader(
-“Cache-Control”,
-“s-maxage=15, stale-while-revalidate=30”
-);
-res.setHeader(“Access-Control-Allow-Origin”, “*”);
+module.exports = async function handler(req, res) {
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
 
-if (req.method !== “GET”) {
-return res.status(405).json({
-error: “Method not allowed.”
-});
-}
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({
+      error: "Please use a GET request."
+    });
+  }
 
-const key = process.env.FOOTBALL_API_KEY;
+  const API_KEY = process.env.FOOTBALL_API_KEY;
 
-if (!key) {
-return res.status(500).json({
-error: “Missing FOOTBALL_API_KEY environment variable in Vercel.”
-});
-}
+  if (!API_KEY) {
+    return res.status(500).json({
+      error: "Missing FOOTBALL_API_KEY",
+      fix: "Check Vercel > Settings > Environment Variables."
+    });
+  }
 
-const {
-live,
-date,
-search,
-league,
-season,
-team,
-next,
-last,
-timezone
-} = req.query || {};
+  const params = req.query || {};
+  const apiParams = new URLSearchParams();
 
-const params = new URLSearchParams();
+  apiParams.set("timezone", "Africa/Lagos");
 
-// Choose the requested fixture type.
-if (live === “all”) {
-params.set(“live”, “all”);
-} else if (date) {
-params.set(“date”, String(date));
-} else if (league && season) {
-params.set(“league”, String(league));
-params.set(“season”, String(season));
-} else {
-// Default: show live matches.
-params.set(“live”, “all”);
-}
+  if (params.live === "all" || params.live === "true") {
+    apiParams.set("live", "all");
+  } else if (params.search) {
+    apiParams.set("search", String(params.search).slice(0, 100));
+  } else if (params.next) {
+    apiParams.set("next", String(params.next));
+  } else if (params.last) {
+    apiParams.set("last", String(params.last));
+  } else if (params.date) {
+    apiParams.set("date", String(params.date));
+  } else {
+    const today = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Africa/Lagos",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(new Date());
 
-// Optional filters.
-if (search) params.set(“search”, String(search));
-if (league) params.set(“league”, String(league));
-if (season) params.set(“season”, String(season));
-if (team) params.set(“team”, String(team));
-if (next) params.set(“next”, String(next));
-if (last) params.set(“last”, String(last));
-if (timezone) params.set(“timezone”, String(timezone));
+    apiParams.set("date", today);
+  }
 
-try {
-const upstream = await fetch(
-https://v3.football.api-sports.io/fixtures?${params.toString()},
-{
-headers: {
-“x-apisports-key”: key
-}
-}
-);
+  for (const key of ["league", "season", "team"]) {
+    if (params[key] && /^\d+$/.test(String(params[key]))) {
+      apiParams.set(key, String(params[key]));
+    }
+  }
 
-const body = await upstream.json();
-if (!upstream.ok) {
-  return res.status(upstream.status).json({
-    error: "Football provider request failed.",
-    details: body.errors || body.message || null
-  });
-}
-if (body.errors && Object.keys(body.errors).length > 0) {
-  return res.status(502).json({
-    error: "Football API returned an error.",
-    details: body.errors
-  });
-}
-return res.status(200).json(body);
+  const url =
+    "https://v3.football.api-sports.io/fixtures?" +
+    apiParams.toString();
 
-} catch (err) {
-return res.status(502).json({
-error: “Could not reach the football data provider.”
-});
-}
-}
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "x-apisports-key": API_KEY,
+        "Accept": "application/json"
+      }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || (data.errors &&
+        Object.keys(data.errors).length > 0)) {
+      console.error("API-Sports error:", {
+        status: response.status,
+        errors: data.errors
+      });
+
+      return res.status(502).json({
+        error: "API-Sports rejected the fixtures request.",
+        httpStatus: response.status,
+        providerErrors: data.errors || {},
+        message: data.message || null
+      });
+    }
+
+    return res.status(200).json({
+      results: data.results || 0,
+      response: data.response || []
+    });
+
+  } catch (error) {
+    console.error("B_STREAMTV request error:", error.message);
+
+    return res.status(502).json({
+      error: "The server could not contact API-Sports.",
+      detail: error.message
+    });
+  }
+};
