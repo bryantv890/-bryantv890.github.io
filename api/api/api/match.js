@@ -1,67 +1,134 @@
-export default async function handler(req, res) {
-res.setHeader(“Cache-Control”, “s-maxage=20, stale-while-revalidate=40”);
-res.setHeader(“Access-Control-Allow-Origin”, “*”);
+module.exports = async function handler(req, res) {
+  res.setHeader("Cache-Control", "s-maxage=15, stale-while-revalidate=30");
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
 
-if (req.method !== “GET”) {
-return res.status(405).json({
-error: “Method not allowed”
-});
-}
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({
+      error: "Method not allowed."
+    });
+  }
 
-const key = process.env.FOOTBALL_API_KEY;
-const fixture = req.query?.fixture;
+  const API_KEY = process.env.FOOTBALL_API_KEY;
 
-if (!key) {
-return res.status(500).json({
-error: “Football API key is not configured”
-});
-}
+  if (!API_KEY) {
+    return res.status(500).json({
+      error: "FOOTBALL_API_KEY is missing from Vercel environment variables."
+    });
+  }
 
-if (!fixture || !/^\d+$/.test(String(fixture))) {
-return res.status(400).json({
-error: “Please provide a valid fixture ID”
-});
-}
+  const fixtureId = String(req.query?.id || "").trim();
 
-const id = encodeURIComponent(String(fixture));
+  if (!/^\d+$/.test(fixtureId)) {
+    return res.status(400).json({
+      error: "A valid numeric fixture ID is required. Example: /api/match?id=123456"
+    });
+  }
 
-async function getFootballData(endpoint) {
-const response = await fetch(
-https://v3.football.api-sports.io/${endpoint},
-{
-method: “GET”,
-headers: {
-“x-apisports-key”: key
-}
-}
-);
+  const API_BASE = "https://v3.football.api-sports.io";
 
-const data = await response.json();
-if (!response.ok || (data.errors && Object.keys(data.errors).length > 0)) {
-  throw new Error("Football API request failed");
-}
-return data.response || [];
+  async function apiGet(path, query = {}) {
+    const url = new URL(API_BASE + path);
 
-}
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        url.searchParams.set(key, String(value));
+      }
+    }
 
-try {
-const [fixtures, statistics, events, lineups] = await Promise.all([
-getFootballData(fixtures?id=${id}),
-getFootballData(fixtures/statistics?fixture=${id}),
-getFootballData(fixtures/events?fixture=${id}),
-getFootballData(fixtures/lineups?fixture=${id})
-]);
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        "x-apisports-key": API_KEY,
+        "Accept": "application/json"
+      }
+    });
 
-return res.status(200).json({
-  fixture: fixtures[0] || null,
-  statistics,
-  events,
-  lineups
-});
+    let body;
 
-} catch (error) {
-return res.status(502).json({
-error: “Unable to load match information right now”
-});
-}
-}
+    try {
+      body = await response.json();
+    } catch (_) {
+      throw new Error("Football data provider returned invalid JSON.");
+    }
+
+    if (!response.ok) {
+      const message =
+        body?.errors?.token ||
+        body?.errors?.requests ||
+        body?.errors?.rateLimit ||
+        body?.message ||
+        `Football API returned HTTP ${response.status}.`;
+
+      throw new Error(
+        typeof message === "string"
+          ? message
+          : JSON.stringify(message)
+      );
+    }
+
+    if (body?.errors && Object.keys(body.errors).length) {
+      throw new Error(JSON.stringify(body.errors));
+    }
+
+    return Array.isArray(body.response) ? body.response : [];
+  }
+
+  try {
+    /*
+     * Each endpoint can count against the provider's quota.
+     * Use one request per endpoint, only when a user opens a match.
+     */
+    const results = await Promise.allSettled([
+      apiGet("/fixtures", { id: fixtureId }),
+      apiGet("/fixtures/events", { fixture: fixtureId }),
+      apiGet("/fixtures/statistics", { fixture: fixtureId }),
+      apiGet("/fixtures/lineups", { fixture: fixtureId })
+    ]);
+
+    const names = [
+      "fixture",
+      "events",
+      "statistics",
+      "lineups"
+    ];
+
+    const data = {};
+    const unavailable = [];
+
+    results.forEach((result, index) => {
+      if (result.status === "fulfilled") {
+        data[names[index]] = result.value;
+      } else {
+        data[names[index]] = [];
+        unavailable.push({
+          section: names[index],
+          message: result.reason?.message || "Data unavailable."
+        });
+      }
+    });
+
+    const fixture = data.fixture[0] || null;
+
+    if (!fixture && !unavailable.some(item => item.section === "fixture")) {
+      return res.status(404).json({
+        error: "This fixture was not found."
+      });
+    }
+
+    return res.status(200).json({
+      fixture,
+      events: data.events,
+      statistics: data.statistics,
+      lineups: data.lineups,
+      unavailable
+    });
+  } catch (error) {
+    console.error("B_STREAMTV match error:", error.message);
+
+    return res.status(502).json({
+      error: "Could not retrieve match details.",
+      detail: error.message
+    });
+  }
+};
