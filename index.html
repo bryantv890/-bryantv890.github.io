@@ -2,740 +2,684 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080808">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05090d">
 <title>B_STREAMTV | Football Lives Here</title>
 
 <style>
-:root{
-  --bg:#080808;
-  --panel:#141414;
-  --panel2:#1d1d1d;
-  --line:#303030;
-  --orange:#ff7a00;
-  --text:#ffffff;
-  --muted:#a5a5a5;
-  --green:#21d985;
-  --red:#ff4057;
+:root {
+  --bg: #05090d;
+  --card: #0a131c;
+  --line: #20313e;
+  --orange: #ff8b32;
+  --orange-red: #ff6538;
+  --red: #ff3045;
+  --text: #f5f7fa;
+  --muted: #a9b5c4;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  padding-bottom:90px
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding-bottom: 85px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
-button,input{font:inherit}
-button{cursor:pointer;color:inherit}
-.app{max-width:800px;margin:auto;min-height:100vh}
-header{
-  position:sticky;top:0;z-index:10;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:13px;background:#0b0b0b;
-  border-bottom:2px solid var(--orange)
+button, input { font: inherit; }
+button { cursor: pointer; }
+header {
+  height: 70px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #05090df5;
+  border-bottom: 1px solid var(--orange-red);
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
-.brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:19px}
-.brandlogo{
-  width:38px;height:38px;display:grid;place-items:center;
-  border-radius:12px;background:var(--orange);color:#080808;font-size:22px
+.icon {
+  color: white;
+  border: 0;
+  background: none;
+  font-size: 25px;
+  padding: 5px;
 }
-.brand small{display:block;color:var(--orange);font-size:9px;letter-spacing:2px;margin-top:3px}
-.headbtn{
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:10px;padding:9px 12px
+.brand {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.searchbar{padding:12px;display:none}
-.searchbar.show{display:block}
-.searchbar input{
-  width:100%;padding:13px;border-radius:12px;
-  background:#181818;color:white;border:1px solid var(--orange)
+.brand-b {
+  color: var(--orange);
+  font-weight: 1000;
+  font-style: italic;
+  font-size: 39px;
 }
-.page{padding:13px}
-.hidden{display:none!important}
-.hero{
-  padding:20px;border:1px solid #663100;border-radius:17px;
-  background:linear-gradient(135deg,#281400,#111 65%);
-  margin-bottom:20px
+.brand-name {
+  font-weight: 950;
+  font-style: italic;
+  font-size: 22px;
 }
-.hero h1{font-size:25px;margin:0 0 12px}
-.eyebrow{font-size:10px;color:var(--orange);letter-spacing:2px;font-weight:bold}
-.primary{
-  background:var(--orange);color:#090909;border:0;border-radius:10px;
-  padding:11px 15px;font-weight:900
+.brand-name span { color: var(--orange); }
+.tagline {
+  text-align: center;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #d5dce4;
 }
-.section{margin-bottom:23px}
-.sectionhead{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:8px;margin-bottom:12px
+.searchbox {
+  margin: 12px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  display: flex;
+  gap: 10px;
+  background: var(--card);
 }
-.sectionhead h2{font-size:17px;margin:0}
-.orange{color:var(--orange)}
-.leagues{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px
+.searchbox input {
+  flex: 1;
+  min-width: 0;
+  color: white;
+  background: transparent;
+  border: 0;
+  outline: 0;
 }
-.leaguebtn{
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:12px;padding:13px 5px;text-align:center;font-size:11px;
-  font-weight:bold;min-height:76px
+main { max-width: 700px; margin: auto; padding: 0 12px; }
+.hero {
+  margin: 13px 0;
+  min-height: 190px;
+  padding: 22px 17px;
+  border: 1px solid var(--orange-red);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(120deg, #100b09, #321609 60%, #09111a);
 }
-.leaguebtn .symbol{display:block;font-size:23px;margin-bottom:7px}
-.leaguebtn:active,.leaguebtn.selected{border-color:var(--orange)}
-.list{display:grid;gap:10px}
-.card{
-  background:linear-gradient(120deg,#191919,#101010);
-  border:1px solid var(--line);border-radius:14px;padding:12px
+.hero:after {
+  content: "⚽";
+  position: absolute;
+  right: -5px;
+  bottom: -20px;
+  font-size: 145px;
+  opacity: .17;
 }
-.card:active{border-color:var(--orange)}
-.meta{
-  display:flex;justify-content:space-between;gap:8px;
-  color:var(--muted);font-size:10px;margin-bottom:12px
+.eyebrow {
+  color: var(--orange);
+  font-weight: 900;
+  letter-spacing: 1px;
 }
-.live{color:#ff5267;font-weight:bold}
-.teams{
-  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-  align-items:center;gap:8px
+.hero h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 300px;
+  margin: 9px 0;
+  font-size: 34px;
+  line-height: 1.04;
 }
-.team{display:flex;align-items:center;gap:7px;min-width:0;font-size:12px;font-weight:bold}
-.team.away{justify-content:flex-end;text-align:right}
-.teamname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.crest{width:34px;height:34px;object-fit:contain;flex-shrink:0}
-.score{font-size:19px;font-weight:900;white-space:nowrap}
-.clock{font-size:12px;font-weight:bold;color:var(--orange);text-align:center;margin-top:10px}
-.submeta{font-size:10px;color:var(--muted);text-align:center;margin-top:7px}
-.filters{display:flex;gap:7px;overflow:auto;margin-bottom:12px}
-.filters button{
-  background:#191919;border:1px solid var(--line);
-  padding:9px 12px;border-radius:9px;white-space:nowrap;font-size:11px
+.hero h1 span { color: var(--orange); }
+.leagues {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 14px;
 }
-.filters button.active{background:var(--orange);color:#080808;border-color:var(--orange)}
-.empty,.loading,.error{
-  padding:20px;text-align:center;background:#141414;
-  border:1px dashed #444;border-radius:12px;color:var(--muted);font-size:12px
+.league {
+  min-height: 94px;
+  padding: 6px 2px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--card);
+  color: white;
+  font-size: 10px;
+  font-weight: 750;
 }
-.bottomnav{
-  position:fixed;bottom:0;left:0;right:0;z-index:20;
-  display:flex;justify-content:center;
-  padding:9px 5px calc(8px + env(safe-area-inset-bottom));
-  background:#0d0d0d;border-top:1px solid #333
+.league b {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 7px;
 }
-.navinner{display:flex;justify-content:space-around;width:100%;max-width:800px}
-.navbtn{
-  background:none;border:0;color:#999;min-width:53px;
-  display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px
+.league.active { border-color: var(--orange); }
+.section {
+  padding: 12px 10px;
+  margin-bottom: 13px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: linear-gradient(150deg, #0a131c, #05090d);
 }
-.navbtn span{font-size:20px}
-.navbtn.active{color:var(--orange)}
-.detailhead{
-  background:#171717;border:1px solid #444;border-radius:16px;
-  padding:18px 10px;text-align:center;margin-bottom:13px
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
 }
-.detailteams{display:grid;grid-template-columns:1fr 100px 1fr;align-items:center;gap:5px}
-.detailteam{font-size:12px;font-weight:bold}
-.detailteam img{width:54px;height:54px;object-fit:contain;display:block;margin:0 auto 8px}
-.detailscore{font-size:27px;font-weight:900}
-.detailtabs{display:flex;gap:5px;overflow:auto;margin-bottom:12px}
-.detailtabs button{
-  background:#191919;border:1px solid #333;border-radius:9px;
-  padding:10px;white-space:nowrap;font-size:11px
+.section-head h2 { font-size: 19px; margin: 0; flex: 1; }
+.orange { color: var(--orange); }
+.small-button {
+  background: none;
+  border: 0;
+  color: var(--muted);
 }
-.detailtabs button.active{background:var(--orange);color:#080808}
-.infoitem{padding:12px 0;border-bottom:1px solid #333;font-size:12px}
-.infoitem span{color:var(--muted)}
-.infoitem b{float:right;text-align:right;max-width:65%}
-.event{display:grid;grid-template-columns:42px 25px 1fr;gap:8px;padding:12px 0;border-bottom:1px solid #333;font-size:12px}
-.event small{display:block;color:var(--muted);margin-top:4px}
-.statrow{padding:12px 0;border-bottom:1px solid #333}
-.statlabels{display:flex;justify-content:space-between;font-weight:bold;font-size:12px}
-.statname{text-align:center;color:var(--muted);font-size:11px;margin:7px}
-.bar{display:flex;gap:4px}
-.bar span{height:5px;background:var(--orange);border-radius:4px}
-.bar span:last-child{background:#777}
-.playerbox{background:#153b2b;padding:12px;border-radius:10px;margin-bottom:10px}
-.player{display:inline-block;background:#0b2119;padding:7px;margin:4px;border-radius:6px;font-size:10px}
-.footer{text-align:center;color:#666;font-size:10px;padding:15px}
-@media(max-width:380px){
- .crest{width:27px;height:27px}
- .team{font-size:10px}
- .score{font-size:16px}
- .leagues{grid-template-columns:repeat(2,minmax(0,1fr))}
+.filters { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 11px; }
+.filter {
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  border-radius: 25px;
+  padding: 8px 16px;
+  color: white;
+  background: #0b151e;
+}
+.filter.active {
+  color: #190e07;
+  background: linear-gradient(100deg, var(--orange-red), #ffad43);
+  border-color: transparent;
+  font-weight: 850;
+}
+.match {
+  padding: 9px;
+  margin-bottom: 8px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #080f16;
+}
+.match-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.live-label {
+  margin-left: auto;
+  color: var(--red);
+  font-weight: 900;
+}
+.clock {
+  color: var(--orange);
+  min-width: 43px;
+  text-align: right;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.match-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr) 23px;
+  align-items: center;
+  gap: 4px;
+  padding-top: 9px;
+}
+.team {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font-size: 12px;
+}
+.team img {
+  width: 29px;
+  height: 29px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.team span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.score {
+  text-align: center;
+  font-size: 21px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.star {
+  border: 0;
+  background: none;
+  color: #b8c4d0;
+  font-size: 22px;
+  padding: 0;
+}
+.star.on { color: var(--orange); }
+.today-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0,1fr) 32px minmax(0,1fr) 20px;
+  gap: 4px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+}
+.mini-team { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.mini-team img { width: 23px; height: 23px; object-fit: contain; }
+.mini-team span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kickoff { font-size: 10px; color: var(--muted); }
+.empty { padding: 22px 6px; text-align: center; color: var(--muted); font-size: 13px; }
+.hidden { display: none !important; }
+.bottom-nav {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 9px 5px calc(9px + env(safe-area-inset-bottom));
+  background: #05090df7;
+  border-top: 1px solid var(--line);
+}
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  font-size: 10px;
+}
+.nav-button b { font-size: 22px; font-weight: 500; }
+.nav-button.active { color: var(--orange); font-weight: 800; }
+@media(min-width:650px) {
+  body { padding-bottom: 20px; }
+  .bottom-nav { display: none; }
+  .hero h1 { font-size: 40px; }
+}
+@media(max-width:360px) {
+  .brand-name { font-size: 19px; }
+  .hero h1 { font-size: 28px; }
+  .team { font-size: 10px; }
+  .team img { width: 25px; height: 25px; }
+  .match-row { grid-template-columns: minmax(0,1fr) 54px minmax(0,1fr) 20px; }
+  .score { font-size: 18px; }
 }
 </style>
 </head>
 
 <body>
-<div class="app">
-
 <header>
+  <button class="icon" id="menuButton">☰</button>
   <div class="brand">
-    <div class="brandlogo">⚽</div>
-    <div>B_STREAMTV<small>FOOTBALL LIVES HERE</small></div>
+    <span class="brand-b">B</span>
+    <div>
+      <div class="brand-name">_STREAM<span>TV</span></div>
+      <div class="tagline">FOOTBALL LIVES HERE</div>
+    </div>
   </div>
-  <div>
-    <button class="headbtn" id="searchToggle" aria-label="Search">⌕</button>
-    <button class="headbtn" id="refreshBtn" aria-label="Refresh">↻</button>
-    <button class="headbtn" id="profileBtn" aria-label="Settings">⚙</button>
-  </div>
+  <button class="icon" id="searchButton">⌕</button>
+  <button class="icon" id="soundButton" aria-label="Toggle goal sounds">🔔</button>
 </header>
 
-<div class="searchbar" id="searchBar">
-  <input id="searchInput" type="search" placeholder="Search a team or competition...">
-  <button class="primary" id="searchBtn" style="margin-top:8px">Search</button>
+<div class="searchbox hidden" id="searchBox">
+  <span>⌕</span>
+  <input id="searchInput" placeholder="Search teams, leagues or matches">
 </div>
 
 <main>
-<section class="page" id="homePage">
-  <div class="hero">
-    <div class="eyebrow">B_STREAMTV</div>
-    <h1>Top Matches</h1>
-    <button class="primary" id="heroLive">▶ View Live Matches</button>
-  </div>
-
-  <section class="section">
-    <div class="sectionhead"><h2>🏆 Top Matches</h2></div>
-    <div class="leagues" id="topLeagues"></div>
+  <section class="hero">
+    <div class="eyebrow">TOP MATCHES</div>
+    <h1>The Best Football <span>Live &amp; Free</span></h1>
   </section>
 
-  <section class="section">
-    <div class="sectionhead"><h2>🔴 Live Matches</h2><span class="orange" id="liveCount">LIVE</span></div>
-    <div class="list" id="homeLive"><div class="loading">Loading live matches...</div></div>
+  <section class="leagues">
+    <button class="league" data-league="Premier League"><b>♛</b>Premier<br>League</button>
+    <button class="league" data-league="LaLiga"><b>🌈</b>LaLiga</button>
+    <button class="league" data-league="Bundesliga"><b>🟥</b>Bundesliga</button>
+    <button class="league" data-league="Serie A"><b>🔷</b>Serie A</button>
+    <button class="league" data-league="Champions League"><b>⚽</b>Champions<br>League</button>
   </section>
 
-  <section class="section">
-    <div class="sectionhead"><h2>📅 Today's Matches</h2><button class="headbtn" data-page="live">See all</button></div>
-    <div class="list" id="upcoming"><div class="loading">Loading fixtures...</div></div>
+  <section class="section" id="liveSection">
+    <div class="section-head">
+      <span class="orange">◉</span>
+      <h2>Live Matches</h2>
+      <button class="small-button" id="refreshButton">↻ Refresh</button>
+    </div>
+    <div class="filters">
+      <button class="filter active" data-filter="All">All</button>
+      <button class="filter" data-filter="Live">Live</button>
+      <button class="filter" data-filter="Upcoming">Upcoming</button>
+      <button class="filter" data-filter="Finished">Finished</button>
+    </div>
+    <div id="matches"><div class="empty">Loading live scores…</div></div>
   </section>
-</section>
 
-<section class="page hidden" id="livePage">
-  <div class="sectionhead"><h2>🔴 Live Matches</h2></div>
-  <div class="filters" id="liveFilters">
-    <button class="active" data-filter="all">All</button>
-    <button data-filter="live">Live</button>
-    <button data-filter="upcoming">Upcoming</button>
-    <button data-filter="finished">Finished</button>
-  </div>
-  <div class="list" id="liveList"><div class="loading">Loading matches...</div></div>
-</section>
+  <section class="section" id="todaySection">
+    <div class="section-head">
+      <span class="orange">▣</span><h2>Today’s Matches</h2>
+    </div>
+    <div id="today"><div class="empty">Loading fixtures…</div></div>
+  </section>
 
-<section class="page hidden" id="highlightsPage">
-  <div class="sectionhead"><h2>🎬 Highlights</h2></div>
-  <div class="card">
-    <h3>Latest Football Highlights</h3>
-    <p style="color:var(--muted);font-size:12px">
-      Official highlight videos will appear here when a legitimate video source is connected.
-      No fake video links are being displayed.
-    </p>
-    <a href="https://www.youtube.com/@UEFA" target="_blank" rel="noopener" style="color:var(--orange)">Explore UEFA videos ↗</a>
-    <br><br>
-    <a href="https://www.youtube.com/@premierleague" target="_blank" rel="noopener" style="color:var(--orange)">Explore Premier League videos ↗</a>
-  </div>
-</section>
-
-<section class="page hidden" id="favoritesPage">
-  <div class="sectionhead"><h2>❤️ Favourite Matches</h2></div>
-  <div class="list" id="favoritesList"><div class="empty">Your favourite matches will appear here.</div></div>
-</section>
-
-<section class="page hidden" id="searchPage">
-  <div class="sectionhead"><h2>🔎 Search Results</h2></div>
-  <div class="list" id="searchResults"><div class="empty">Search for a team or competition above.</div></div>
-</section>
-
-<section class="page hidden" id="matchPage">
-  <button class="headbtn" id="backBtn" style="margin-bottom:12px">← Back</button>
-  <div class="detailhead" id="detailHead"></div>
-  <div class="detailtabs" id="detailTabs">
-    <button class="active" data-detail="overview">Overview</button>
-    <button data-detail="events">Events</button>
-    <button data-detail="statistics">Statistics</button>
-    <button data-detail="lineups">Lineups</button>
-  </div>
-  <div id="detailContent"></div>
-</section>
-
-<section class="page hidden" id="settingsPage">
-  <div class="sectionhead"><h2>⚙ Settings</h2></div>
-  <div class="card">
-    <p>Sound goal alerts</p>
-    <label><input type="checkbox" id="soundToggle" checked> Play sound when a goal is detected</label>
-    <p style="margin-top:20px">Vibration alerts</p>
-    <label><input type="checkbox" id="vibrateToggle"> Vibrate when supported</label>
-    <p style="color:var(--muted);font-size:12px;margin-top:20px">
-      Goal alerts work while this page is open. Login and personal accounts require secure authentication setup.
-    </p>
-  </div>
-</section>
-
-<div class="footer">B_STREAMTV · Football lives here</div>
+  <section class="section hidden" id="extraSection">
+    <div class="section-head"><span class="orange">⚽</span><h2 id="extraTitle">Matches</h2></div>
+    <div id="extraContent"></div>
+  </section>
 </main>
-</div>
 
-<nav class="bottomnav">
-  <div class="navinner">
-    <button class="navbtn active" data-page="home"><span>⌂</span>Home</button>
-    <button class="navbtn" data-page="live"><span>◉</span>Live</button>
-    <button class="navbtn" data-page="highlights"><span>▶</span>Highlights</button>
-    <button class="navbtn" data-page="favorites"><span>♥</span>Favorites</button>
-    <button class="navbtn" data-page="search"><span>⌕</span>Search</button>
-  </div>
+<nav class="bottom-nav">
+  <button class="nav-button active" data-view="Home"><b>⌂</b>Home</button>
+  <button class="nav-button" data-view="Live"><b>◉</b>Live</button>
+  <button class="nav-button" data-view="Highlights"><b>▷</b>Highlights</button>
+  <button class="nav-button" data-view="Favorites"><b>♡</b>Favorites</button>
+  <button class="nav-button" data-view="Search"><b>⌕</b>Search</button>
 </nav>
 
 <script>
-const $=s=>document.querySelector(s);
-const $$=s=>[...document.querySelectorAll(s)];
+const API = '/api/fixtures';
+const $ = s => document.querySelector(s);
 
-const state={
-  page:"home",
-  live:[],
-  fixtures:[],
-  detail:null,
-  selected:null,
-  detailTab:"overview",
-  filter:"all",
-  league:"all",
-  timers:{},
-  lastScores:{},
-  searchTerm:""
-};
+let matches = [];
+let filter = 'All';
+let leagueFilter = '';
+let query = '';
+let currentView = 'Home';
+let clocks = {};
+let previousScores = {};
+let soundEnabled = false;
+let audioContext = null;
 
-const popular=[
-  {name:"Premier League",id:39,icon:"🏴"},
-  {name:"Bundesliga",id:78,icon:"🇩🇪"},
-  {name:"LaLiga",id:140,icon:"🇪🇸"},
-  {name:"Serie A",id:135,icon:"🇮🇹"},
-  {name:"Champions League",id:2,icon:"⭐"}
-];
+const favoriteKey = 'bstv_favorites_v2';
+const favorites = new Set(JSON.parse(localStorage.getItem(favoriteKey) || '[]'));
 
-const favorites=new Set(JSON.parse(localStorage.getItem("bstv_favorites")||"[]"));
-
-function esc(v){
-  return String(v??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
+function getStatus(m) {
+  return m.fixture?.status || m.status || {};
+}
+function getId(m) {
+  return String((m.fixture || m).id || m.id || '');
+}
+function getTeam(m, side) {
+  return m.teams?.[side] || m[side] || {};
+}
+function getLeague(m) {
+  return m.league?.name || m.competition?.name || 'Football';
+}
+function getGoals(m) {
+  const g = m.goals || m.score || {};
+  return [g.home ?? null, g.away ?? null];
+}
+function isLive(m) {
+  const s = getStatus(m);
+  return ['1H','HT','2H','ET','BT','P','LIVE','INT'].includes(s.short)
+    || (Number(s.elapsed) > 0 && !['FT','AET','PEN'].includes(s.short));
+}
+function isFinished(m) {
+  return ['FT','AET','PEN'].includes(getStatus(m).short);
+}
+function isUpcoming(m) {
+  return !isLive(m) && !isFinished(m);
+}
+function safeText(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[c]);
+}
+function getLogo(team) {
+  return team.logo || team.crest || '';
+}
+function logoHTML(team) {
+  const logo = getLogo(team);
+  if (!logo) return '<span>⚽</span>';
+  return `<img src="${safeText(logo)}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+}
+function leagueIcon(name) {
+  if (/premier/i.test(name)) return '♛';
+  if (/laliga|la liga/i.test(name)) return '🌈';
+  if (/bundes/i.test(name)) return '🟥';
+  if (/serie a/i.test(name)) return '🔷';
+  return '⚽';
 }
 
-function isLive(m){
-  return ["1H","2H","HT","ET","P","LIVE","BT","SUSP","INT"].includes(m.fixture?.status?.short);
-}
+/* Seconds are estimated from the API's reported elapsed minute.
+   The provider's next response resets the base if its minute changes. */
+function matchClock(m) {
+  const s = getStatus(m);
+  if (!isLive(m)) return isFinished(m) ? 'FT' : (s.long || '—');
+  if (s.elapsed == null) return 'LIVE';
 
-function isFinished(m){
-  return ["FT","AET","PEN"].includes(m.fixture?.status?.short);
-}
+  const key = getId(m);
+  const baseMinute = Number(s.elapsed) || 0;
+  const baseExtra = Number(s.extra) || 0;
+  const baseSeconds = baseMinute * 60 + baseExtra * 60;
 
-function clockText(m){
-  const s=m.fixture?.status||{};
-  const id=String(m.fixture?.id||"");
-  if(s.short==="HT")return "HT";
-  if(["FT","AET","PEN"].includes(s.short))return s.short;
-  if(!isLive(m))return s.long||"Scheduled";
-
-  if(s.elapsed==null)return "LIVE";
-
-  /*
-   * API-Football normally supplies elapsed whole minutes, not
-   * an authoritative seconds field. We count seconds locally.
-   * This clock is an estimate between provider updates.
-   */
-  if(!state.timers[id]){
-    state.timers[id]={
-      baseMinute:Number(s.elapsed)||0,
-      start:Date.now()
-    };
+  if (!clocks[key] || clocks[key].minute !== baseMinute) {
+    clocks[key] = { minute: baseMinute, started: Date.now(), seconds: baseSeconds };
   }
 
-  const t=state.timers[id];
-  const elapsed=Math.max(0,Math.floor((Date.now()-t.start)/1000));
-  const total=t.baseMinute*60+elapsed;
-  return Math.floor(total/60)+":"+String(total%60).padStart(2,"0");
+  const total = clocks[key].seconds + Math.floor((Date.now() - clocks[key].started) / 1000);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
 }
 
-function tickClocks(){
-  $$(".clock[data-clock]").forEach(el=>{
-    const m=[...state.live,...state.fixtures].find(x=>String(x.fixture?.id)===el.dataset.clock);
-    if(m)el.textContent=clockText(m);
-  });
-  if(state.detail?.fixture){
-    const id=String(state.detail.fixture.fixture?.id||"");
-    const m=[...state.live,...state.fixtures].find(x=>String(x.fixture?.id)===id);
-    const clock=m?clockText(m):clockText(state.detail.fixture);
-    const el=$("#detailClock");
-    if(el)el.textContent=clock;
+/* A short two-tone alert; mobile browsers require user interaction first. */
+function playGoalSound() {
+  if (!soundEnabled) return;
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    if (!audioContext) audioContext = new Ctx();
+    if (audioContext.state === 'suspended') audioContext.resume();
+
+    [880, 1175].forEach((frequency, index) => {
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(0.0001, audioContext.currentTime + index * 0.13);
+      gain.gain.exponentialRampToValueAtTime(0.22, audioContext.currentTime + index * 0.13 + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + index * 0.13 + 0.28);
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start(audioContext.currentTime + index * 0.13);
+      oscillator.stop(audioContext.currentTime + index * 0.13 + 0.3);
+    });
+  } catch (e) {
+    console.warn('Goal sound unavailable', e);
   }
 }
-setInterval(tickClocks,1000);
 
-function scoreText(m){
-  const g=m.goals||{};
-  if(g.home==null&&g.away==null)return "VS";
-  return `${g.home??0} - ${g.away??0}`;
+function detectGoals(newMatches) {
+  for (const m of newMatches) {
+    const key = getId(m);
+    const g = getGoals(m);
+    const score = `${g[0]}-${g[1]}`;
+    if (previousScores[key] !== undefined && previousScores[key] !== score) {
+      playGoalSound();
+      if ('vibrate' in navigator) navigator.vibrate([150, 80, 150]);
+      showToast(`⚽ GOAL! ${getTeam(m,'home').name || 'Home'} ${g[0]} - ${g[1]} ${getTeam(m,'away').name || 'Away'}`);
+    }
+    previousScores[key] = score;
+  }
 }
 
-function cardHTML(m){
-  const h=m.teams?.home||{};
-  const a=m.teams?.away||{};
-  const live=isLive(m);
-  const id=String(m.fixture?.id||"");
-  const status=live?"LIVE":isFinished(m)?"FT":(m.fixture?.date?
-    new Date(m.fixture.date).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):
-    "Scheduled");
-  const fav=favorites.has(id);
+function showToast(message) {
+  let toast = $('#toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:30;background:#17232e;border:1px solid #ff8b32;border-radius:12px;padding:12px 15px;max-width:92%;font-size:13px;text-align:center;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.display = 'block';
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => toast.style.display = 'none', 3500);
+}
 
-  return `
-  <article class="card" data-open="${esc(id)}">
-    <div class="meta">
-      <span>${esc(m.league?.name||"Football")}</span>
-      <span class="${live?"live":""}">${live?"🔴 LIVE · ":""}${esc(status)}</span>
+function matchCard(m) {
+  const home = getTeam(m,'home');
+  const away = getTeam(m,'away');
+  const g = getGoals(m);
+  const key = getId(m);
+  const name = getLeague(m);
+  const label = isLive(m) ? '● LIVE' : (isFinished(m) ? 'FT' : 'UPCOMING');
+
+  return `<article class="match">
+    <div class="match-head">
+      <span>${leagueIcon(name)}</span><span>${safeText(name)}</span>
+      <span class="live-label">${label}</span>
+      <span class="clock" data-clock="${safeText(key)}">${safeText(matchClock(m))}</span>
     </div>
-    <div class="teams">
-      <div class="team">
-        <img class="crest" src="${esc(h.logo||"")}" alt="${esc(h.name||"Home")} logo"
-          onerror="this.onerror=null;this.src='https://placehold.co/64x64/171717/ff7a00?text=⚽'">
-        <span class="teamname">${esc(h.name||"Home")}</span>
-      </div>
-      <div class="score">${esc(scoreText(m))}</div>
-      <div class="team away">
-        <span class="teamname">${esc(a.name||"Away")}</span>
-        <img class="crest" src="${esc(a.logo||"")}" alt="${esc(a.name||"Away")} logo"
-          onerror="this.onerror=null;this.src='https://placehold.co/64x64/171717/ff7a00?text=⚽'">
-      </div>
+    <div class="match-row">
+      <div class="team">${logoHTML(home)}<span>${safeText(home.name || 'Home')}</span></div>
+      <div class="score">${g[0] ?? '–'} - ${g[1] ?? '–'}</div>
+      <div class="team">${logoHTML(away)}<span>${safeText(away.name || 'Away')}</span></div>
+      <button class="star ${favorites.has(key) ? 'on' : ''}" data-fav="${safeText(key)}">${favorites.has(key) ? '★' : '☆'}</button>
     </div>
-    ${live?`<div class="clock ${live?"live":""}" data-clock="${esc(id)}">${esc(clockText(m))}</div>`:""}
-    <div class="submeta">${esc(m.fixture?.venue?.name||m.fixture?.status?.long||"Match Centre")}</div>
-    <button class="headbtn favbtn" data-fav="${esc(id)}" style="margin-top:9px;font-size:11px">
-      ${fav?"♥ Remove favourite":"♡ Add favourite"}
-    </button>
   </article>`;
 }
 
-function renderList(el,items,message){
-  if(!items.length){
-    el.innerHTML=`<div class="empty">${esc(message||"No matches found.")}</div>`;
-    return;
-  }
-  el.innerHTML=items.map(cardHTML).join("");
-}
-
-function wireCards(root=document){
-  root.querySelectorAll("[data-open]").forEach(el=>{
-    el.onclick=e=>{
-      if(e.target.closest("[data-fav]"))return;
-      openMatch(el.dataset.open);
-    };
-  });
-
-  root.querySelectorAll("[data-fav]").forEach(btn=>{
-    btn.onclick=e=>{
-      e.stopPropagation();
-      const id=String(btn.dataset.fav);
-      if(favorites.has(id))favorites.delete(id);
-      else favorites.add(id);
-      localStorage.setItem("bstv_favorites",JSON.stringify([...favorites]));
-      renderFavorites();
-      renderList($("#homeLive"),state.live.slice(0,5),"No live matches right now.");
-      renderList($("#liveList"),filteredLive(),"No matches found.");
-      wireCards();
-    };
-  });
-}
-
-async function api(url){
-  const r=await fetch(url,{cache:"no-store"});
-  const data=await r.json();
-  if(!r.ok||data.error)throw Error(data.error||"Football data could not be loaded.");
-  return data;
-}
-
-function unwrap(data){
-  if(Array.isArray(data))return data;
-  return data.response||data.fixtures||[];
-}
-
-async function loadLive(){
-  try{
-    const data=await api("/api/fixtures?live=all");
-    const items=unwrap(data);
-    detectGoals(items);
-    state.live=items;
-    $("#liveCount").textContent=items.length+" LIVE";
-    renderList($("#homeLive"),items.slice(0,5),"No live matches right now. Check again during match time.");
-    renderList($("#liveList"),filteredLive(),"No matches match this filter.");
-    wireCards();
-  }catch(e){
-    $("#homeLive").innerHTML=`<div class="error">${esc(e.message)} Check your Vercel API connection.</div>`;
-    $("#liveList").innerHTML=`<div class="error">${esc(e.message)}</div>`;
-  }
-}
-
-async function loadFixtures(){
-  try{
-    const date=new Date().toLocaleDateString("en-CA");
-    const data=await api("/api/fixtures?date="+encodeURIComponent(date));
-    state.fixtures=unwrap(data);
-    const upcoming=state.fixtures.filter(m=>!isFinished(m)).slice(0,8);
-    renderList($("#upcoming"),upcoming,"No fixtures returned for today.");
-    wireCards();
-  }catch(e){
-    $("#upcoming").innerHTML=`<div class="error">${esc(e.message)}</div>`;
-  }
-}
-
-function filteredLive(){
-  if(state.filter==="live")return state.live.filter(isLive);
-  if(state.filter==="finished")return state.live.filter(isFinished);
-  if(state.filter==="upcoming")return state.live.filter(m=>!isLive(m)&&!isFinished(m));
-  return state.live;
-}
-
-function detectGoals(items){
-  items.forEach(m=>{
-    const id=String(m.fixture?.id||"");
-    const score=scoreText(m);
-    if(state.lastScores[id]&&state.lastScores[id]!==score&&score!=="VS"){
-      if($("#soundToggle")?.checked)playGoalSound();
-      if($("#vibrateToggle")?.checked&&navigator.vibrate)navigator.vibrate([200,100,200]);
-    }
-    state.lastScores[id]=score;
-  });
-}
-
-function playGoalSound(){
-  try{
-    const C=window.AudioContext||window.webkitAudioContext;
-    if(!C)return;
-    const c=new C(),o=c.createOscillator(),g=c.createGain();
-    o.frequency.value=880;
-    g.gain.value=.08;
-    o.connect(g);g.connect(c.destination);
-    o.start();
-    o.stop(c.currentTime+.25);
-  }catch(e){}
-}
-
-function renderLeagues(){
-  $("#topLeagues").innerHTML=popular.map(l=>`
-    <button class="leaguebtn" data-league="${l.id}">
-      <span class="symbol">${l.icon}</span>${esc(l.name)}
-    </button>`).join("");
-
-  $$("#topLeagues [data-league]").forEach(btn=>{
-    btn.onclick=async()=>{
-      const league=popular.find(l=>String(l.id)===btn.dataset.league);
-      if(!league)return;
-      showPage("live");
-      $("#liveList").innerHTML='<div class="loading">Loading competition matches...</div>';
-      try{
-        const date=new Date().toLocaleDateString("en-CA");
-        const data=await api("/api/fixtures?date="+encodeURIComponent(date)+"&league="+league.id);
-        const items=unwrap(data);
-        renderList($("#liveList"),items,`No ${league.name} fixtures returned for today.`);
-        wireCards();
-      }catch(e){
-        $("#liveList").innerHTML=`<div class="error">${esc(e.message)}</div>`;
-      }
-    };
-  });
-}
-
-function showPage(page){
-  state.page=page;
-  ["home","live","highlights","favorites","search","match","settings"].forEach(p=>{
-    $("#"+p+"Page").classList.toggle("hidden",p!==page);
-  });
-  $$(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
-  if(page==="live")renderList($("#liveList"),filteredLive(),"No matches found.");
-  if(page==="favorites")renderFavorites();
-  if(page==="search")$("#searchInput").focus();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function renderFavorites(){
-  const all=[...state.live,...state.fixtures];
-  const unique=[...new Map(all.map(m=>[String(m.fixture?.id),m])).values()];
-  const items=unique.filter(m=>favorites.has(String(m.fixture?.id)));
-  renderList($("#favoritesList"),items,"You haven't added any favourite matches yet.");
-  wireCards();
-}
-
-async function searchMatches(){
-  const term=$("#searchInput").value.trim();
-  state.searchTerm=term;
-  showPage("search");
-  if(!term){
-    $("#searchResults").innerHTML='<div class="empty">Type a team or competition name above.</div>';
-    return;
-  }
-
-  $("#searchResults").innerHTML='<div class="loading">Searching football fixtures...</div>';
-  try{
-    const date=new Date().toLocaleDateString("en-CA");
-    const data=await api("/api/fixtures?date="+encodeURIComponent(date)+"&search="+encodeURIComponent(term));
-    const items=unwrap(data);
-    renderList($("#searchResults"),items,"No matching fixtures found for today. Try another spelling.");
-    wireCards();
-  }catch(e){
-    $("#searchResults").innerHTML=`<div class="error">${esc(e.message)}</div>`;
-  }
-}
-
-async function openMatch(id){
-  state.selected=id;
-  showPage("match");
-  $("#detailContent").innerHTML='<div class="loading">Loading match centre...</div>';
-  $("#detailHead").innerHTML="";
-  try{
-    const data=await api("/api/match?fixture="+encodeURIComponent(id));
-    state.detail=data;
-    state.detailTab="overview";
-    $$("#detailTabs button").forEach(b=>b.classList.toggle("active",b.dataset.detail==="overview"));
-    renderMatchDetail();
-  }catch(e){
-    $("#detailContent").innerHTML=`<div class="error">${esc(e.message)}</div>`;
-  }
-}
-
-function renderMatchDetail(){
-  const d=state.detail||{};
-  const m=d.fixture;
-  if(!m)return;
-  const h=m.teams?.home||{},a=m.teams?.away||{};
-  const g=m.goals||{};
-  const score=(g.home==null&&g.away==null)?"VS":`${g.home??0} - ${g.away??0}`;
-  const live=isLive(m);
-
-  $("#detailHead").innerHTML=`
-    <div class="meta"><span>${esc(m.league?.name||"Football")}</span><span>${live?"🔴 LIVE":esc(m.fixture?.status?.long||"")}</span></div>
-    <div class="detailteams">
-      <div class="detailteam">
-        <img src="${esc(h.logo||"")}" alt="${esc(h.name||"Home")} logo"
-          onerror="this.onerror=null;this.src='https://placehold.co/80x80/171717/ff7a00?text=⚽'">
-        ${esc(h.name||"Home")}
-      </div>
-      <div>
-        <div class="detailscore">${esc(score)}</div>
-        <div class="clock" id="detailClock">${esc(clockText(m))}</div>
-      </div>
-      <div class="detailteam">
-        <img src="${esc(a.logo||"")}" alt="${esc(a.name||"Away")} logo"
-          onerror="this.onerror=null;this.src='https://placehold.co/80x80/171717/ff7a00?text=⚽'">
-        ${esc(a.name||"Away")}
-      </div>
-    </div>`;
-  renderDetailTab();
-}
-
-function renderDetailTab(){
-  const d=state.detail||{},f=d.fixture;
-  const tab=state.detailTab;
-  const content=$("#detailContent");
-
-  if(tab==="overview"){
-    const venue=f?.fixture?.venue||{};
-    content.innerHTML=`
-      <div class="card">
-        <h3>Match Information</h3>
-        <div class="infoitem"><span>Competition</span><b>${esc(f?.league?.name||"Unavailable")}</b></div>
-        <div class="infoitem"><span>Stadium</span><b>${esc(venue.name||"Not available")}</b></div>
-        <div class="infoitem"><span>Referee</span><b>${esc(f?.fixture?.referee||"Not available")}</b></div>
-        <div class="infoitem"><span>Kick-off</span><b>${f?.fixture?.date?esc(new Date(f.fixture.date).toLocaleString()):"Unavailable"}</b></div>
-      </div>
-      <br><div class="card"><h3>Recent Events</h3>
-      ${(d.events||[]).slice(0,5).map(eventHTML).join("")||'<div class="empty">No events available yet.</div>'}</div>`;
-  }
-
-  if(tab==="events"){
-    content.innerHTML=(d.events||[]).map(eventHTML).join("")||'<div class="empty">Goals, cards and substitutions will appear when supplied by the API.</div>';
-  }
-
-  if(tab==="statistics"){
-    const stats=d.statistics||[];
-    const home=stats[0]?.statistics||[],away=stats[1]?.statistics||[];
-    const keys=["Ball Possession","Total Shots","Shots on Goal","Shots off Goal","Corner Kicks","Fouls","Yellow Cards","Red Cards","Goalkeeper Saves","Passes"];
-
-    const rows=keys.map(k=>{
-      const x=home.find(s=>s.type===k)?.value;
-      const y=away.find(s=>s.type===k)?.value;
-      if(x==null&&y==null)return "";
-      const n=v=>parseFloat(String(v??0).replace("%",""))||0;
-      const total=n(x)+n(y)||1;
-      return `<div class="statrow">
-        <div class="statlabels"><span>${esc(x??"—")}</span><span>${esc(y??"—")}</span></div>
-        <div class="statname">${esc(k)}</div>
-        <div class="bar"><span style="width:${n(x)/total*100}%"></span><span style="width:${n(y)/total*100}%"></span></div>
-      </div>`;
-    }).join("");
-
-    content.innerHTML=rows||'<div class="empty">Statistics are not available for this match yet.</div>';
-  }
-
-  if(tab==="lineups"){
-    const lineups=d.lineups||[];
-    content.innerHTML=lineups.length?lineups.map(team=>`
-      <div class="card" style="margin-bottom:12px">
-        <h3>${esc(team.team?.name||"Team")}</h3>
-        <p class="orange">Formation: ${esc(team.formation||"Not available")}</p>
-        <div class="playerbox">
-          ${(team.startXI||[]).map((p,i)=>`
-            <span class="player"><b>${esc(p.player?.number??i+1)}</b> ${esc(p.player?.name||"Player")}</span>
-          `).join("")||"Starting lineup unavailable"}
-        </div>
-        <h4>Substitutes</h4>
-        ${(team.substitutes||[]).map(p=>`<span class="player">${esc(p.player?.number??"")} ${esc(p.player?.name||"Player")}</span>`).join("")||"Substitutes unavailable"}
-      </div>`).join(""):'<div class="empty">Lineups are not available yet. They depend on provider coverage.</div>';
-  }
-}
-
-function eventHTML(e){
-  const type=e.type||"Event";
-  const detail=e.detail||"";
-  const icon=type==="Goal"?"⚽":type==="Card"?(detail.toLowerCase().includes("red")?"🟥":"🟨"):type.toLowerCase().includes("subst")?"🔁":"•";
-  return `<div class="event">
-    <div>${esc(e.time?.elapsed??"—")}'${e.time?.extra?"+ "+esc(e.time.extra):""}</div>
-    <div>${icon}</div>
-    <div><b>${esc(e.player?.name||type)}</b><small>${esc(type)} · ${esc(detail)} ${esc(e.team?.name||"")}</small></div>
+function todayRow(m) {
+  const home = getTeam(m,'home');
+  const away = getTeam(m,'away');
+  const g = getGoals(m);
+  const date = (m.fixture || m).date || m.date;
+  const time = date ? new Date(date).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:false}) : '--:--';
+  return `<div class="today-row">
+    <div class="kickoff">${time}</div>
+    <div class="mini-team">${logoHTML(home)}<span>${safeText(home.name || 'Home')}</span></div>
+    <div>${isUpcoming(m) ? '–' : `${g[0] ?? 0}-${g[1] ?? 0}`}</div>
+    <div class="mini-team">${logoHTML(away)}<span>${safeText(away.name || 'Away')}</span></div>
+    <button class="star ${favorites.has(getId(m)) ? 'on' : ''}" data-fav="${safeText(getId(m))}">${favorites.has(getId(m)) ? '★' : '☆'}</button>
   </div>`;
 }
 
-$$("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+function filterMatches() {
+  return matches.filter(m => {
+    if (filter === 'Live' && !isLive(m)) return false;
+    if (filter === 'Upcoming' && !isUpcoming(m)) return false;
+    if (filter === 'Finished' && !isFinished(m)) return false;
+    if (leagueFilter && !getLeague(m).toLowerCase().includes(leagueFilter.toLowerCase())) return false;
+    const text = `${getTeam(m,'home').name || ''} ${getTeam(m,'away').name || ''} ${getLeague(m)}`.toLowerCase();
+    return !query || text.includes(query.toLowerCase());
+  });
+}
 
-$("#heroLive").onclick=()=>showPage("live");
-$("#refreshBtn").onclick=()=>{loadLive();loadFixtures();};
-$("#searchToggle").onclick=()=>{$("#searchBar").classList.toggle("show");$("#searchInput").focus();};
-$("#searchBtn").onclick=searchMatches;
-$("#searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")searchMatches();});
-$("#profileBtn").onclick=()=>showPage("settings");
-$("#backBtn").onclick=()=>showPage("live");
+function render() {
+  const list = filterMatches();
+  $('#matches').innerHTML = list.slice(0, 40).map(matchCard).join('')
+    || '<div class="empty">No matches found. Check the API connection or choose another filter.</div>';
+  $('#today').innerHTML = list.filter(isUpcoming).slice(0, 10).map(todayRow).join('')
+    || '<div class="empty">No upcoming matches available.</div>';
+  bindFavorites();
+}
 
-$("#liveFilters").querySelectorAll("[data-filter]").forEach(b=>{
-  b.onclick=()=>{
-    state.filter=b.dataset.filter;
-    $("#liveFilters").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));
-    renderList($("#liveList"),filteredLive(),"No matches found for this filter.");
-    wireCards();
-  };
-});
+function bindFavorites() {
+  document.querySelectorAll('[data-fav]').forEach(button => {
+    button.onclick = () => {
+      const key = button.dataset.fav;
+      if (favorites.has(key)) favorites.delete(key);
+      else favorites.add(key);
+      localStorage.setItem(favoriteKey, JSON.stringify([...favorites]));
+      render();
+      if (currentView === 'Favorites') showView('Favorites');
+    };
+  });
+}
 
-$("#detailTabs").querySelectorAll("[data-detail]").forEach(b=>{
-  b.onclick=()=>{
-    state.detailTab=b.dataset.detail;
-    $("#detailTabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));
-    renderDetailTab();
-  };
-});
+async function loadMatches() {
+  try {
+    const response = await fetch(API + '?live=all&_=' + Date.now(), {cache:'no-store'});
+    if (!response.ok) throw new Error('Fixtures API returned ' + response.status);
+    const data = await response.json();
+    let received = Array.isArray(data) ? data : (data.response || data.fixtures || data.data || []);
 
-renderLeagues();
-loadLive();
-loadFixtures();
+    if (!received.length) {
+      const date = new Date().toISOString().slice(0,10);
+      const daily = await fetch(API + '?date=' + date + '&_=' + Date.now(), {cache:'no-store'});
+      if (daily.ok) {
+        const d = await daily.json();
+        received = Array.isArray(d) ? d : (d.response || d.fixtures || d.data || []);
+      }
+    }
 
-/* Refresh scores and match details periodically without resetting
-   a running local seconds counter unnecessarily. */
-setInterval(()=>{
-  loadLive();
-  loadFixtures();
-  if(state.page==="match"&&state.selected){
-    api("/api/match?fixture="+encodeURIComponent(state.selected))
-      .then(data=>{state.detail=data;renderMatchDetail();})
-      .catch(()=>{});
+    detectGoals(received);
+    matches = received;
+    render();
+  } catch (error) {
+    $('#matches').innerHTML = '<div class="empty">Could not load scores. Your /api/fixtures backend must be working for live data.</div>';
+    $('#today').innerHTML = '<div class="empty">Fixtures will appear when the API responds.</div>';
+    console.error(error);
   }
-},60000);
+}
+
+function showView(view) {
+  currentView = view;
+  document.querySelectorAll('.nav-button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  $('#liveSection').classList.toggle('hidden', ['Highlights','Favorites','Search'].includes(view));
+  $('#todaySection').classList.toggle('hidden', ['Highlights','Favorites','Search'].includes(view));
+  $('#extraSection').classList.toggle('hidden', !['Highlights','Favorites','Search'].includes(view));
+
+  if (view === 'Home') {
+    filter = 'All'; leagueFilter = ''; render();
+  } else if (view === 'Live') {
+    filter = 'Live'; leagueFilter = ''; render();
+  } else if (view === 'Highlights') {
+    $('#extraTitle').textContent = 'Football Highlights';
+    $('#extraContent').innerHTML = '<div class="empty">Connect a legitimate highlights source to show videos here.</div>';
+  } else if (view === 'Favorites') {
+    $('#extraTitle').textContent = 'Your Favorites';
+    $('#extraContent').innerHTML = matches.filter(m => favorites.has(getId(m))).map(matchCard).join('')
+      || '<div class="empty">Tap ☆ on a match to save it here.</div>';
+    bindFavorites();
+  } else if (view === 'Search') {
+    $('#extraTitle').textContent = 'Search Football';
+    $('#extraContent').innerHTML = '<div class="searchbox"><input id="pageSearch" placeholder="Search teams or leagues"></div>';
+    const input = $('#pageSearch');
+    input.value = query;
+    input.oninput = () => {
+      query = input.value;
+      $('#liveSection').classList.remove('hidden');
+      $('#todaySection').classList.add('hidden');
+      $('#extraSection').classList.add('hidden');
+      filter = 'All';
+      render();
+    };
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.querySelectorAll('.nav-button').forEach(b => b.onclick = () => showView(b.dataset.view));
+document.querySelectorAll('[data-filter]').forEach(b => b.onclick = () => {
+  filter = b.dataset.filter;
+  document.querySelectorAll('[data-filter]').forEach(x => x.classList.toggle('active', x === b));
+  render();
+});
+document.querySelectorAll('[data-league]').forEach(b => b.onclick = () => {
+  leagueFilter = leagueFilter === b.dataset.league ? '' : b.dataset.league;
+  document.querySelectorAll('[data-league]').forEach(x => x.classList.toggle('active', x === b && !!leagueFilter));
+  render();
+  $('#liveSection').scrollIntoView({behavior:'smooth'});
+});
+
+$('#searchButton').onclick = () => $('#searchBox').classList.toggle('hidden');
+$('#searchInput').oninput = e => { query = e.target.value; render(); };
+$('#refreshButton').onclick = loadMatches;
+$('#soundButton').onclick = async () => {
+  soundEnabled = !soundEnabled;
+  $('#soundButton').textContent = soundEnabled ? '🔔' : '🔕';
+  if (soundEnabled) {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) {
+        audioContext = audioContext || new Ctx();
+        await audioContext.resume();
+        playGoalSound();
+      }
+      showToast('Goal sound alerts enabled');
+    } catch (e) { showToast('Sound is not available in this browser'); }
+  } else showToast('Goal sound alerts muted');
+};
+$('#menuButton').onclick = () => showToast('Use the bottom tabs to explore B_STREAMTV.');
+
+loadMatches();
+setInterval(loadMatches, 15000);
+setInterval(() => {
+  document.querySelectorAll('[data-clock]').forEach(el => {
+    const m = matches.find(x => getId(x) === el.dataset.clock);
+    if (m) el.textContent = matchClock(m);
+  });
+}, 1000);
 </script>
 </body>
 </html>
