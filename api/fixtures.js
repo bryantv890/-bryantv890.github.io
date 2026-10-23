@@ -1,9 +1,17 @@
 module.exports = async function handler(req, res) {
-  res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate=20");
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader(
+    "Cache-Control",
+    "s-maxage=30, stale-while-revalidate=60"
+  );
+
+  res.setHeader(
+    "Content-Type",
+    "application/json; charset=utf-8"
+  );
 
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
+
     return res.status(405).json({
       error: "Method not allowed."
     });
@@ -13,84 +21,52 @@ module.exports = async function handler(req, res) {
 
   if (!API_KEY) {
     return res.status(500).json({
-      error: "FOOTBALL_API_KEY is missing from Vercel environment variables."
+      error: "FOOTBALL_API_KEY is missing from Vercel."
     });
   }
 
-  const API_BASE = "https://v3.football.api-sports.io";
+  try {
+    const params = req.query || {};
 
-  const params = req.query || {};
-  const live = params.live;
-  const search = String(params.search || "").trim();
-  const league = String(params.league || "").trim();
-  const season = String(params.season || "").trim();
-  const team = String(params.team || "").trim();
-  const next = String(params.next || "").trim();
-  const last = String(params.last || "").trim();
-  const date = String(params.date || "").trim();
-  const timezone = String(params.timezone || "Africa/Lagos").trim();
+    const timezone = "Africa/Lagos";
 
-  const allowedStatuses = new Set([
-    "NS", "1H", "HT", "2H", "ET", "BT", "P",
-    "FT", "AET", "PEN", "SUSP", "INT", "PST",
-    "CANC", "ABD", "AWD", "WO", "LIVE"
-  ]);
+    function getLocalDate() {
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone: timezone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
 
-  const validDate = /^\d{4}-\d{2}-\d{2}$/.test(date);
-  const validSeason = /^\d{4}$/.test(season);
-  const validId = /^\d+$/.test(league) && /^\d+$/.test(team);
+      const values = {};
 
-  const isLiveRequest = live === "all" || live === "true";
-
-  if (search.length > 100) {
-    return res.status(400).json({ error: "Search text is too long." });
-  }
-
-  if (league && !/^\d+$/.test(league)) {
-    return res.status(400).json({ error: "Invalid league ID." });
-  }
-
-  if (team && !/^\d+$/.test(team)) {
-    return res.status(400).json({ error: "Invalid team ID." });
-  }
-
-  if (date && !validDate) {
-    return res.status(400).json({
-      error: "Date must use YYYY-MM-DD format."
-    });
-  }
-
-  if (season && !validSeason) {
-    return res.status(400).json({
-      error: "Season must be a four-digit year."
-    });
-  }
-
-  if (next && (!/^\d+$/.test(next) || Number(next) > 50)) {
-    return res.status(400).json({
-      error: "The next parameter must be between 1 and 50."
-    });
-  }
-
-  if (last && (!/^\d+$/.test(last) || Number(last) > 50)) {
-    return res.status(400).json({
-      error: "The last parameter must be between 1 and 50."
-    });
-  }
-
-  async function apiGet(path, query = {}) {
-    const url = new URL(API_BASE + path);
-
-    for (const [key, value] of Object.entries(query)) {
-      if (value !== undefined && value !== null && value !== "") {
-        url.searchParams.set(key, String(value));
+      for (const part of parts) {
+        if (part.type !== "literal") {
+          values[part.type] = part.value;
+        }
       }
+
+      return `${values.year}-${values.month}-${values.day}`;
     }
 
-    const response = await fetch(url.toString(), {
+    const date = String(
+      params.date || getLocalDate()
+    ).trim();
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return res.status(400).json({
+        error: "Date must use YYYY-MM-DD format."
+      });
+    }
+
+    const url =
+      "https://sportapi.ai/api/fixtures/date/" +
+      encodeURIComponent(date);
+
+    const response = await fetch(url, {
       method: "GET",
       headers: {
-        "x-apisports-key": API_KEY,
+        "X-Api-Key": API_KEY,
         "Accept": "application/json"
       }
     });
@@ -99,147 +75,244 @@ module.exports = async function handler(req, res) {
 
     try {
       body = await response.json();
-    } catch (_) {
-      throw new Error("Football data provider returned invalid JSON.");
-    }
-
-    if (!response.ok) {
-      const message =
-        body?.errors?.token ||
-        body?.errors?.requests ||
-        body?.errors?.rateLimit ||
-        body?.message ||
-        `Football API returned HTTP ${response.status}.`;
-
+    } catch {
       throw new Error(
-        typeof message === "string"
-          ? message
-          : JSON.stringify(message)
+        "SportAPI returned an invalid JSON response."
       );
     }
 
-    if (body?.errors && Object.keys(body.errors).length) {
-      throw new Error(JSON.stringify(body.errors));
+    if (!response.ok || body.success === false) {
+      console.error(
+        "SportAPI error:",
+        response.status,
+        body
+      );
+
+      return res.status(
+        response.status >= 400 && response.status < 600
+          ? response.status
+          : 502
+      ).json({
+        error: "SportAPI could not retrieve fixtures.",
+        detail:
+          body.error ||
+          body.message ||
+          `Provider returned HTTP ${response.status}.`
+      });
     }
 
-    return body;
-  }
-
-  try {
-    const query = {
-      timezone
-    };
-
-    if (isLiveRequest) {
-      query.live = "all";
-
-      if (league) query.league = league;
-      if (team) query.team = team;
-    } else if (search) {
-      query.search = search;
-
-      if (league) query.league = league;
-      if (team) query.team = team;
-      if (date) query.date = date;
-      if (validSeason) query.season = season;
-    } else if (date) {
-      query.date = date;
-
-      if (league) query.league = league;
-      if (team) query.team = team;
-      if (validSeason) query.season = season;
-    } else if (next) {
-      query.next = next;
-
-      if (league) query.league = league;
-      if (team) query.team = team;
-      if (validSeason) query.season = season;
-    } else if (last) {
-      query.last = last;
-
-      if (league) query.league = league;
-      if (team) query.team = team;
-      if (validSeason) query.season = season;
-    } else {
-      // Default to today's fixtures in the requested timezone.
-      query.date = new Intl.DateTimeFormat("en-CA", {
-        timeZone: timezone,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      }).format(new Date());
-
-      if (league) query.league = league;
-      if (team) query.team = team;
-      if (validSeason) query.season = season;
-    }
-
-    const fixtureData = await apiGet("/fixtures", query);
-
-    const fixtures = Array.isArray(fixtureData.response)
-      ? fixtureData.response
+    const sourceFixtures = Array.isArray(body.data)
+      ? body.data
       : [];
 
-    /*
-     * Only live fixtures need a second-level clock lookup.
-     * The odds feed may not cover every live fixture.
-     */
-    if (isLiveRequest && fixtures.length) {
-      try {
-        const oddsData = await apiGet("/odds/live");
+    const search = String(params.search || "")
+      .trim()
+      .toLowerCase();
 
-        const oddsFixtures = Array.isArray(oddsData.response)
-          ? oddsData.response
-          : [];
+    const leagueFilter = String(
+      params.league || ""
+    ).trim();
 
-        const secondsByFixture = new Map();
+    const teamFilter = String(
+      params.team || ""
+    ).trim();
 
-        for (const item of oddsFixtures) {
-          const fixtureId = Number(item?.fixture?.id);
-          const seconds = item?.fixture?.status?.seconds;
+    const liveRequested =
+      params.live === "all" ||
+      params.live === "true";
 
-          if (
-            Number.isFinite(fixtureId) &&
-            typeof seconds === "string" &&
-            /^\d{1,3}:\d{2}$/.test(seconds)
-          ) {
-            secondsByFixture.set(fixtureId, {
-              seconds,
-              update: item.update || null
-            });
+    const fixtures = sourceFixtures
+      .filter((match) => {
+        if (liveRequested) {
+          const status = String(
+            match.status || ""
+          ).toUpperCase();
+
+          const liveStatuses = [
+            "LIVE",
+            "1H",
+            "2H",
+            "HT",
+            "ET",
+            "BT",
+            "P",
+            "INT"
+          ];
+
+          if (!liveStatuses.includes(status)) {
+            return false;
           }
         }
 
-        for (const fixture of fixtures) {
-          const fixtureId = Number(fixture?.fixture?.id);
-          const clock = secondsByFixture.get(fixtureId);
+        if (
+          leagueFilter &&
+          String(match.league_id) !== leagueFilter
+        ) {
+          return false;
+        }
 
-          if (clock) {
-            fixture.fixture.status.seconds = clock.seconds;
-            fixture.fixture.status.seconds_source = "api-football-live-odds";
-            fixture.fixture.status.seconds_updated_at = clock.update;
+        if (
+          teamFilter &&
+          String(match.home_id) !== teamFilter &&
+          String(match.away_id) !== teamFilter
+        ) {
+          return false;
+        }
+
+        if (search) {
+          const searchable = [
+            match.home_team,
+            match.away_team,
+            match.league_name
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          if (!searchable.includes(search)) {
+            return false;
           }
         }
-      } catch (clockError) {
-        // Preserve the normal fixture response if the odds endpoint
-        // is unavailable or does not have seconds-level data.
-        console.error(
-          "B_STREAMTV seconds clock unavailable:",
-          clockError.message
+
+        return true;
+      })
+      .map((match) => {
+        const rawStatus = String(
+          match.status || "NS"
         );
-      }
-    }
+
+        const status = rawStatus.toUpperCase();
+
+        const minuteText = String(
+          match.minute ?? ""
+        );
+
+        const elapsedMatch = minuteText.match(
+          /^\s*(\d+)/
+        );
+
+        const elapsed = elapsedMatch
+          ? Number(elapsedMatch[1])
+          : null;
+
+        let shortStatus = status;
+
+        if (status === "SCHEDULED") {
+          shortStatus = "NS";
+        }
+
+        if (status === "FINISHED") {
+          shortStatus = "FT";
+        }
+
+        if (status === "POSTPONED") {
+          shortStatus = "PST";
+        }
+
+        if (status === "CANCELLED") {
+          shortStatus = "CANC";
+        }
+
+        const homeScore = match.home_score;
+        const awayScore = match.away_score;
+
+        return {
+          fixture: {
+            id: match.id,
+            date:
+              match.kickoff_utc ||
+              match.datetime ||
+              match.date,
+            timestamp: match.kickoff_utc
+              ? Math.floor(
+                  new Date(match.kickoff_utc).getTime() /
+                    1000
+                )
+              : null,
+            timezone,
+            status: {
+              long: rawStatus,
+              short: shortStatus,
+              elapsed,
+              seconds: null
+            }
+          },
+
+          league: {
+            id: match.league_id ?? null,
+            name: match.league_name || "Football",
+            country: match.league_zone || "",
+            logo: null,
+            flag: null,
+            season: null,
+            round: match.stage || null
+          },
+
+          teams: {
+            home: {
+              id: match.home_id ?? null,
+              name: match.home_team || "Home",
+              logo: null,
+              winner: match.winner === "home"
+            },
+
+            away: {
+              id: match.away_id ?? null,
+              name: match.away_team || "Away",
+              logo: null,
+              winner: match.winner === "away"
+            }
+          },
+
+          goals: {
+            home: homeScore ?? null,
+            away: awayScore ?? null
+          },
+
+          score: {
+            halftime: {
+              home: null,
+              away: null
+            },
+
+            fulltime: {
+              home: homeScore ?? null,
+              away: awayScore ?? null
+            },
+
+            extratime: {
+              home: null,
+              away: null
+            },
+
+            penalty: {
+              home: match.penalty_home ?? null,
+              away: match.penalty_away ?? null
+            }
+          },
+
+          // Preserve the provider's original data too.
+          sportapi: match
+        };
+      });
 
     return res.status(200).json({
       get: "fixtures",
+      provider: "SportAPI",
+      date,
       results: fixtures.length,
       response: fixtures,
       clockNote:
-        "Seconds are provided only when the live odds feed supplies them. Otherwise, the match clock displays the provider's elapsed minute.",
-      providerErrors: fixtureData.errors || []
+        "SportAPI supplies the match status and minute. " +
+        "Seconds are not invented because the documented " +
+        "fixture data does not establish an authoritative " +
+        "seconds-level match clock."
     });
   } catch (error) {
-    console.error("B_STREAMTV fixtures error:", error.message);
+    console.error(
+      "B_STREAMTV SportAPI error:",
+      error.message
+    );
 
     return res.status(502).json({
       error: "Could not retrieve football fixtures.",
