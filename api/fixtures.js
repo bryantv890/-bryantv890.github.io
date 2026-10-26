@@ -1,82 +1,100 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
   if (req.method !== "GET") {
-    res.setHeader("Allow", "GET");
     return res.status(405).json({
       success: false,
       error: "Method not allowed"
     });
   }
 
-  const apiKey = process.env.FOOTBALL_API_KEY;
+  const API_KEY = process.env.FOOTBALL_API_KEY;
 
-  if (!apiKey) {
+  if (!API_KEY) {
     return res.status(500).json({
       success: false,
-      error: "Missing FOOTBALL_API_KEY environment variable"
+      error: "Missing FOOTBALL_API_KEY in Vercel environment variables"
     });
   }
 
   try {
+    const {
+      live,
+      date,
+      league,
+      season,
+      team,
+      next,
+      last,
+      search,
+      status
+    } = req.query;
+
+    const params = new URLSearchParams();
+
+    params.set("limit", "200");
+
+    if (live === "all") params.set("live", "all");
+    if (date) params.set("date", date);
+    if (league) params.set("league", league);
+    if (season) params.set("season", season);
+    if (team) params.set("team", team);
+    if (next) params.set("next", next);
+    if (last) params.set("last", last);
+    if (status) params.set("status", status);
+
     const url =
-      "https://sportsapi.com.br/api/v1/games?sport=football&status=live&limit=100&offset=0";
+      `https://api.kickoffapi.com/api/v2/fixtures?${params}`;
 
     const response = await fetch(url, {
-      method: "GET",
       headers: {
-        "X-API-Key": apiKey,
+        "x-api-key": API_KEY,
         "Accept": "application/json"
-      },
-      signal: AbortSignal.timeout(15000)
+      }
     });
 
-    const raw = await response.text();
-
-    let data;
-
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      return res.status(502).json({
-        success: false,
-        error: "Football provider returned invalid JSON",
-        providerStatus: response.status
-      });
-    }
+    const body = await response.json();
 
     if (!response.ok) {
-      return res.status(502).json({
+      return res.status(response.status).json({
         success: false,
-        error: "Football provider request failed",
-        providerStatus: response.status,
-        details: data.message || data.error || "Provider rejected request"
+        error: body.error || "KickoffAPI request failed",
+        code: body.code || null
       });
     }
 
-    const fixtures = Array.isArray(data.response)
-      ? data.response
-      : Array.isArray(data.matches)
-      ? data.matches
-      : Array.isArray(data.data)
-      ? data.data
+    let fixtures = Array.isArray(body.data)
+      ? body.data
       : [];
+
+    if (search) {
+      const query = String(search).toLowerCase();
+
+      fixtures = fixtures.filter(match => {
+        const home = match.home?.name || "";
+        const away = match.away?.name || "";
+        const competition = match.league?.name || "";
+
+        return `${home} ${away} ${competition}`
+          .toLowerCase()
+          .includes(query);
+      });
+    }
 
     return res.status(200).json({
       success: true,
-      source: "SportsAPI Brazil",
+      source: "KickoffAPI",
       updatedAt: Date.now(),
       results: fixtures.length,
-      response: fixtures
+      response: fixtures,
+      meta: body.meta || {}
     });
-  } catch (error) {
-    console.error("B_STREAMTV fixtures error:", error);
 
+  } catch (error) {
     return res.status(502).json({
       success: false,
-      error: error.name === "TimeoutError"
-        ? "Football provider timed out"
-        : "Unable to retrieve football data"
+      error: "Unable to connect to KickoffAPI",
+      details: error.message
     });
   }
-};
+}
