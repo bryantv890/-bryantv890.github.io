@@ -1,9 +1,14 @@
 {
 “name”: “b-streamtv”,
 “version”: “1.0.0”,
+“description”: “B_STREAMTV live football scores and match centre”,
 “private”: true,
+“main”: “server.js”,
 “scripts”: {
 “start”: “node server.js”
+},
+“engines”: {
+“node”: “>=18”
 },
 “dependencies”: {
 “express”: “^4.21.2”
