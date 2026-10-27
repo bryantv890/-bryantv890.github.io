@@ -23,47 +23,59 @@ const {
 live,
 date,
 league,
-season,
-team,
-next,
-last,
 search,
-status
+status,
+page,
+per_page
 } = req.query;
 
 const params = new URLSearchParams();
-params.set("limit", "200");
-if (live) params.set("live", live);
-if (date) params.set("date", date);
+params.set("per_page", per_page || "100");
+params.set("page", page || "1");
+// 5DollarFootballAPI uses status=live for live matches.
+if (live === "all") {
+  params.set("status", "live");
+} else if (status) {
+  params.set("status", status);
+} else {
+  params.set("status", "all");
+}
 if (league) params.set("league", league);
-if (season) params.set("season", season);
-if (team) params.set("team", team);
-if (next) params.set("next", next);
-if (last) params.set("last", last);
-if (status) params.set("status", status);
+// The API accepts a maximum 24-hour window.
+if (date) {
+  const start = new Date(`${date}T00:00:00Z`);
+  if (Number.isNaN(start.getTime())) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid date. Use YYYY-MM-DD."
+    });
+  }
+  const end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+  params.set("start_time", Math.floor(start.getTime() / 1000));
+  params.set("end_time", Math.floor(end.getTime() / 1000));
+}
 const response = await fetch(
-  `https://api.kickoffapi.com/api/v2/fixtures?${params}`,
+  `https://api.5dollarfootballapi.com/v1/fixtures?${params}`,
   {
     headers: {
-      "x-api-key": API_KEY,
-      "Accept": "application/json"
+      Authorization: `Bearer ${API_KEY}`,
+      Accept: "application/json"
     }
   }
 );
 const body = await response.json();
-if (!response.ok) {
-  return res.status(response.status).json({
+if (!response.ok || !body.success) {
+  return res.status(response.status || 502).json({
     success: false,
-    error: body.error || "KickoffAPI request failed",
-    code: body.code || null
+    error: body.error || body.message || "5DollarFootballAPI request failed"
   });
 }
 let fixtures = Array.isArray(body.data) ? body.data : [];
 if (search) {
   const query = String(search).toLowerCase();
   fixtures = fixtures.filter(match => {
-    const home = match.home?.name || "";
-    const away = match.away?.name || "";
+    const home = match.teams?.home?.name || "";
+    const away = match.teams?.away?.name || "";
     const competition = match.league?.name || "";
     return `${home} ${away} ${competition}`
       .toLowerCase()
@@ -72,17 +84,17 @@ if (search) {
 }
 return res.json({
   success: true,
-  source: "KickoffAPI",
+  source: "5DollarFootballAPI",
   updatedAt: Date.now(),
   results: fixtures.length,
   response: fixtures,
-  meta: body.meta || {}
+  pagination: body.pagination || {}
 });
 
 } catch (error) {
 return res.status(502).json({
 success: false,
-error: “Unable to connect to KickoffAPI”,
+error: “Unable to connect to 5DollarFootballAPI”,
 details: error.message
 });
 }
